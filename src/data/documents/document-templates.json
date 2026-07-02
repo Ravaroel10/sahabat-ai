@@ -1,0 +1,36 @@
+{
+  "templates": [
+    {
+      "id": "sktm",
+      "type": "sktm",
+      "name": "Surat Keterangan Tidak Mampu (SKTM)",
+      "description": "Surat resmi yang menyatakan bahwa seseorang atau keluarga tidak mampu secara ekonomi. Diperlukan untuk berbagai bantuan sosial.",
+      "fields": ["nama", "nik", "tempat_lahir", "tanggal_lahir", "jenis_kelamin", "alamat", "rt_rw", "kelurahan", "kecamatan", "kabupaten_kota", "pekerjaan", "penghasilan_per_bulan", "jumlah_tanggungan", "keperluan"],
+      "content": "SURAT KETERANGAN TIDAK MAMPU\n\nNomor:       /SKTM/{tanggal}\n\nYang bertanda tangan di bawah ini:\n\nNama:         {nama_kades_lurah}\nJabatan:      {jabatan}\nAlamat:       {alamat_kantor}\n\nDengan ini menyatakan bahwa:\n\nNama:                   {nama}\nNIK:                    {nik}\nTempat/Tgl Lahir:       {tempat_lahir}, {tanggal_lahir}\nJenis Kelamin:          {jenis_kelamin}\nAlamat:                 {alamat}\nRT/RW:                  {rt_rw}\nKelurahan/Desa:         {kelurahan}\nKecamatan:              {kecamatan}\nKabupaten/Kota:         {kabupaten_kota}\nPekerjaan:              {pekerjaan}\nPenghasilan/Bulan:      Rp {penghasilan_per_bulan}\nJumlah Tanggungan:      {jumlah_tanggungan} orang\n\nBerdasarkan hasil survey dan penelitian, yang bersangkutan benar-benar termasuk keluarga tidak mampu dan layak menerima bantuan sosial dari pemerintah.\n\nSurat keterangan ini dibuat untuk keperluan: {keperluan}\n\nDemikian surat keterangan ini dibuat dengan sebenar-benarnya dan dapat digunakan sebagaimana mestinya.\n\n{tempat_tanggal}\n\nYang Membuat Pernyataan,\n\n\n\n({nama})\n\n\nLurah/Kepala Desa,\n\n\n\n({nama_kades_lurah})\n\n\nMengetahui:\nCamat {kecamatan}\n\n\n\n(....................)"
+    },
+    {
+      "id": "permohonan-bantuan",
+      "type": "permohonan",
+      "name": "Surat Permohonan Bantuan",
+      "description": "Surat permohonan untuk mengajukan diri atau keluarga sebagai penerima bantuan sosial.",
+      "fields": ["nama", "nik", "alamat", "telepon", "pekerjaan", "penghasilan", "jumlah_anggota_keluarga", "alasan_memerlukan_bantuan", "jenis_bantuan_yang_dimohon", "keterangan_tambahan"],
+      "content": "SURAT PERMOHONAN BANTUAN SOSIAL\n\nKepada Yth.\n{Bagian} Dinas Sosial\n{Kabupaten/Kota}\n\nDengan hormat,\n\nYang bertanda tangan di bawah ini:\n\nNama:                   {nama}\nNIK:                    {nik}\nAlamat:                 {alamat}\nNomor Telepon:         {telepon}\nPekerjaan:              {pekerjaan}\nPenghasilan/Bulan:      Rp {penghasilan}\nJumlah Anggota Keluarga:{jumlah_anggota_keluarga} orang\n\nDengan ini mengajukan permohonan untuk menjadi penerima {jenis_bantuan_yang_dimohon}.\n\nAlasan memerlukan bantuan:\n{alasan_mernerlukan_bantuan}\n\nKeterangan tambahan:\n{keterangan_tambahan}\n\nSebagai bahan pertimbangan, bersama ini kami lampirkan:\n1. Fotokopi KTP\n2. Fotokopi Kartu Keluarga (KK)\n3. Surat Keterangan Tidak Mampu (SKTM)\n4. Fotokopi Akta Kelahiran (jika ada)\n5. Surat Keterangan Tempat Tinggal (jika domisili tidak sesuai KK)\n\nDemikian surat permohonan ini saya buat dengan sebenar-benarnya. Atas perhatian dan pertimbangan Bapak/Ibu, saya ucapkan terima kasih.\n\n{hempat_tanggal}\n\nHormat saya,\n\n\n\n({nama})"
+    },
+    {
+      "id": "form-aduan",
+      "type": "aduan",
+      "name": "Formulir Aduan/Masukan",
+      "description": "Formulir untuk menyampaikan pengaduan atau masukan terkait program bantuan sosial.",
+      "fields": ["nama_pengadu", "nik_pengadu", "alamat_pengadu", "telepon_pengadu", "email", "kategori_aduan", "subjek_aduan", "detail_aduan", "bukti_pendukung", "tanggapan_yang_diharapkan"],
+      "content": "FORMULIR PENGADUAN/MASUKAN\nPROGRAM BANTUAN SOSIAL\n\nTanggal: {tanggal}\n\nA. IDENTITAS PENGADU\n\nNama Lengkap:        {nama_pengadu}\nNIK:                 {nik_pengadu}\nAlamat:              {alamat_pengadu}\nNomor Telepon:       {telepon_pengadu}\nEmail:               {email}\n\nB. KATEGORI PENGADUAN\n\n□ Program tidak sampai ke sasaran\n□ Data penerima tidak valid\n□ Kendala dalam pendaftaran\n□ Masalah pencairan bantuan\n□ Penyimpangan pelaksanaan\n□ Lainnya: {kategori_lainnya}\n\nC. RINGKASAN PENGADUAN\n\nSubjek: {subjek_aduan}\n\nDetail Pengaduan:\n{detail_aduan}\n\nD. BUKTI PENDUKUNG\n\n□ Fotokopi dokumen pendukung\n□ Screenshot percakapan/SMS\n□ Foto lokasi masalah\n□ Surat kuasa (jika dikuasakan)\n□ Lainnya: {bukti_lainnya}\n\nE. TANGGAPAN YANG DIHARAPKAN\n\n{tanggapan_yang_diharapkan}\n\n\nPengadu,\n\n\n\n({nama_pengadu})\n\n\nPetugas Penerima,\n\n\n\n(....................)"
+    },
+    {
+      "id": "surat-pengantar",
+      "type": "pengantar",
+      "name": "Surat Pengantar",
+      "description": "Surat pengantar dari kelurahan/kecamatan untuk melengkapi persyaratan bantuan sosial.",
+      "fields": ["nomor_surat", "nama", "nik", "tempat_lahir", "tanggal_lahir", "alamat", "rt_rw", "kelurahan", "kecamatan", "tujuan_surat", "keperluan"],
+      "content": "PEMERINTAH KABUPATEN/KOTA {kabupaten_kota}\nKECAMATAN {kecamatan}\nKELURAHAN/DESA {kelurahan}\n\nSURAT PENGANTAR\n\nNomor: {nomor_surat}\n\nYang bertanda tangan di bawah ini, Pemerintah Kecamatan {kecamatan} / Kelurahan {kelurahan}:\n\nDengan ini mengantar warga yang namanya tersebut di bawah ini:\n\nNama:                   {nama}\nNIK:                    {nik}\nTempat/Tgl Lahir:       {tempat_lahir}, {tanggal_lahir}\nAlamat:                 {alamat}\nRT/RW:                  {rt_rw}\nKelurahan/Desa:         {kelurahan}\nKecamatan:              {kecamatan}\n\nUntuk: {tujuan_surat}\n\nKeperluan: {keperluan}\n\nBerdasarkan data yang ada di kantor kami, informasi yang diberikan adalah benar.\n\nDemikian surat pengantar ini dibuat untuk dapat dipergunakan sebagaimana mestinya.\n\n{kota_tanggal}\n\nLurah/Camat,\n\n\n\n({nama_pejabat})\n\n\nNIP. {nip}"
+    }
+  ]
+}

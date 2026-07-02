@@ -1,0 +1,384 @@
+{
+  "programs": [
+    {
+      "id": "pkh",
+      "acronym": "PKH",
+      "shortName": "PKH",
+      "name": "Program Keluarga Harapan (PKH)",
+      "description": "Bantuan tunai bersyarat untuk keluarga miskin dengan ibu hamil, anak balita, anak sekolah, atau lansia.",
+      "category": "cash",
+      "provider": "Kemensos",
+      "ministry": "Kementerian Sosial",
+      "benefits": [
+        "Bantuan tunai Rp 3.000.000 per tahun untuk ibu hamil/balita",
+        "Rp 1.050.000 per tahun untuk anak SD",
+        "Rp 1.500.000 per tahun untuk anak SMP",
+        "Rp 2.000.000 per tahun untuk anak SMA",
+        "Rp 2.400.000 per tahun untuk lansia/disabilitas"
+      ],
+      "benefitsSummary": "Bantuan uang tunai Rp500.000 - Rp3.000.000 per tahun tergantung komponen dan jumlah anggota keluarga",
+      "eligibility": "Keluarga yang terdaftar dalam Data Terpadu Kesejahteraan Sosial (DTKS) dengan kriteria:\n- Ibu hamil/nifas\n- Anak usia 0-18 tahun\n- Lanjut usia di atas 56 tahun\n- Penyandang disabilitas",
+      "requirements": {
+        "maxIncome": 2000000,
+        "hasChildren": true,
+        "minChildren": 1
+      },
+      "documents": "1. Kartu Keluarga (KK)\n2. KTP Kepala Keluarga\n3. Surat Keterangan Tidak Mampu (SKTM) dari Kelurahan/Kecamatan\n4. Akta Kelahiran anak (jika ada)\n5. Buku KIA/Buku Kesehatan Ibu (untuk ibu hamil)",
+      "contact": "Direktorat Jaminan Sosial Keluarga, Kemensos\nTel: 021-7854 8000\nWebsite: kemensos.go.id",
+      "legalBasis": "Permensos No. 1 Tahun 2024",
+      "regulationReference": "Permensos No. 1 Tahun 2024",
+      "applicationUrl": "https://pkh.kemensos.go.id",
+      "province": null,
+      "keywords": ["bantuan tunai", "keluarga miskin", "anak", "ibu hamil", "lansia", "pendidikan", "kesehatan"]
+    },
+    {
+      "id": "bpnt",
+      "acronym": "BPNT",
+      "shortName": "BPNT",
+      "name": "Bantuan Pangan Non Tunai (BPNT)",
+      "description": "Bantuan sosial pangan dalam bentuk non tunai yang disalurkan melalui e-warong.",
+      "category": "food",
+      "provider": "Kemensos",
+      "ministry": "Kementerian Sosial",
+      "benefits": [
+        "Bantuan Rp 200.000 per bulan",
+        "Dapat digunakan untuk membeli beras, telur, minyak, dan bahan pangan lainnya",
+        "Disalurkan melalui kartu elektronik"
+      ],
+      "benefitsSummary": "Bantuan sebesar Rp400.000 per bulan dalam bentuk saldo elektronik untuk pembelian bahan pangan di e-warong",
+      "eligibility": "Keluarga yang terdaftar dalam DTKS dan belum menerima program bantuan pangan lainnya",
+      "requirements": {
+        "maxIncome": 1800000
+      },
+      "documents": "1. Kartu Keluarga (KK)\n2. KTP Kepala Keluarga\n3. Surat Keputusan Penetapan Recipient dari Kemensos\n4. Kartu Keluarga Sejahtera (KKS)",
+      "contact": "Direktorat Perlindungan Sosial Jaminan Sosial, Kemensos\nTel: 021-7854 8000",
+      "legalBasis": "Permensos No. 2 Tahun 2024",
+      "regulationReference": "Permensos No. 2 Tahun 2024",
+      "applicationUrl": "https://bpnt.kemensos.go.id",
+      "province": null,
+      "keywords": ["bantuan pangan", "makanan", "e-warong", "beras", "bahan pokok"]
+    },
+    {
+      "id": "kip",
+      "acronym": "KIP",
+      "shortName": "KIP",
+      "name": "Kartu Indonesia Pintar (KIP)",
+      "description": "Bantuan pendidikan untuk anak usia sekolah dari keluarga miskin.",
+      "category": "education",
+      "provider": "Kemendikbudristek",
+      "ministry": "Kementerian Pendidikan dan Kebudayaan",
+      "benefits": [
+        "Bantuan Rp 450.000 per tahun untuk siswa SD",
+        "Rp 750.000 per tahun untuk siswa SMP",
+        "Rp 1.000.000 per tahun untuk siswa SMA/SMK",
+        "Dapat digunakan untuk biaya sekolah, seragam, buku, dll"
+      ],
+      "benefitsSummary": "Bantuan rp450.000 - rp1.800.000 per tahun tergantung jenjang pendidikan, digunakan untuk kebutuhan pendidikan",
+      "eligibility": "Siswa dari keluarga miskin atau rentan miskin yang:\n- Bersekolah di SD/MI, SMP/MTs, SMA/SMK/MA\n- Memiliki Kartu Keluarga Sejahtera (KKS)\n- Terdaftar dalam Data Pokok Pendidikan (DAPODIK)",
+      "requirements": {
+        "maxIncome": 2500000,
+        "hasChildren": true,
+        "minChildren": 1
+      },
+      "documents": "1. Kartu Keluarga (KK)\n2. KTP/Surat Keterangan Kependudukan\n3. Kartu Indonesia Pintar (KIP) atau KKS\n4. Surat keterangan dari sekolah\n5. Rekening atas nama siswa (untuk jenjang SMA/SMK)",
+      "contact": "Pusat Layanan Pembiayaan Pendidikan, Kemdikbud\nTel: 021-572 5500\nWebsite: pip.kemdikbud.go.id",
+      "legalBasis": "Permendikbud No. 10 Tahun 2022",
+      "regulationReference": "Permendikbud No. 10 Tahun 2022",
+      "applicationUrl": "https://pip.kemdikbud.go.id",
+      "province": null,
+      "keywords": ["pendidikan", "sekolah", "beasiswa", "siswa", "kartu pintar"]
+    },
+    {
+      "id": "jkn-pbi",
+      "acronym": "JKN-PBI",
+      "shortName": "BPJS PBI",
+      "name": "Jaminan Kesehatan Nasional - Penerima Bantuan Iuran (PBI)",
+      "description": "Jaminan kesehatan gratis untuk masyarakat miskin dan tidak mampu yang iurannya dibayar pemerintah.",
+      "category": "health",
+      "provider": "BPJS Kesehatan",
+      "ministry": "Kementerian Kesehatan / BPJS Kesehatan",
+      "benefits": [
+        "Layanan kesehatan gratis di fasilitas kesehatan tingkat pertama",
+        "Layanan kesehatan lanjutan di rumah sakit",
+        "Obat-obatan sesuai resep dokter",
+        "Tidak ada biaya iuran bulanan"
+      ],
+      "benefitsSummary": "Penerimaan manfaat pelayanan kesehatan tingkat pertama dan lanjutan di fasilitas kesehatan BPJS, iuran sebesar Rp42.000 per bulan ditanggung pemerintah",
+      "eligibility": "Warga negara Indonesia yang:\n- Terdaftar dalam DTKS\n- Tidak mampu secara ekonomi\n- Terdaftar di Data Terpadu BPJS Kesehatan",
+      "requirements": {
+        "maxIncome": 1500000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat Keterangan Tidak Mampu (SKTM)\n4. Kartu BPJS Kesehatan (jika sudah terdaftar)\n5. Surat Keputusan PBI dari Kemensos",
+      "contact": "BPJS Kesehatan\nTel: 1500-400\nWebsite: bpjs-kesehatan.go.id",
+      "legalBasis": "UU No. 40 Tahun 2004 tentang SJSN, Perpres No. 82 Tahun 2018",
+      "regulationReference": "UU No. 40 Tahun 2004",
+      "applicationUrl": "https://bpjs-kesehatan.go.id",
+      "province": null,
+      "keywords": ["bpjs", "kesehatan", "rumah sakit", "obat", "medical", "jkn", "pbi"]
+    },
+    {
+      "id": "aslut",
+      "acronym": "ASLUT",
+      "shortName": "Bantuan Lansia",
+      "name": "Asistensi Sosial Lanjut Usia Terlantar",
+      "description": "Bantuan untuk lansia terlantar atau tidak mampu yang tidak memiliki keluarga.",
+      "category": "elderly",
+      "provider": "Kemensos",
+      "ministry": "Kementerian Sosial",
+      "benefits": [
+        "Bantuan tunai Rp 300.000 per bulan",
+        "Akses ke panti jompo pemerintah",
+        "Layanan kesehatan gratis"
+      ],
+      "benefitsSummary": "Bantuan langsung tunai Rp500.000 per bulan untuk lansia di rumah, serta pelayanan sosial di Lembaga Kesejahteraan Sosial (LKS)",
+      "eligibility": "Warga negara Indonesia:\n- Berusia 60 tahun ke atas\n- Terlantar (tanpa keluarga, atau keluarga tidak mampu)\n- Terdaftar dalam DTKS",
+      "requirements": {
+        "minAge": 60,
+        "maxIncome": 1000000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat Keterangan Tidak Mampu (SKTM)\n4. Surat keterangan lurah/kades tentang kondisi lansia\n5. Pas foto 3x4",
+      "contact": "Direktorat Rehabilitasi Sosial Lanjut Usia, Kemensos\nTel: 021-7854 8000",
+      "legalBasis": "Permensos No. 12 Tahun 2013",
+      "regulationReference": "Permensos No. 12 Tahun 2013",
+      "province": null,
+      "keywords": ["lansia", "tua", "terlantar", "jompo", "pensiun", "hari tua"]
+    },
+    {
+      "id": "bantuan-disabilitas",
+      "acronym": "ASOD",
+      "shortName": "Bantuan Disabilitas",
+      "name": "Asistensi Sosial Penyandang Disabilitas Berat",
+      "description": "Bantuan untuk penyandang disabilitas berat yang tidak mampu bekerja.",
+      "category": "disability",
+      "provider": "Kemensos",
+      "ministry": "Kementerian Sosial",
+      "benefits": [
+        "Bantuan tunai Rp 300.000 per bulan",
+        "Bantuan alat bantu disabilitas",
+        "Pelatihan keterampilan",
+        "Akses rehabilitasi sosial"
+      ],
+      "benefitsSummary": "Bantuan tunai Rp 300.000 per bulan, alat bantu disabilitas, pelatihan keterampilan, dan akses rehabilitasi sosial",
+      "eligibility": "Penyandang disabilitas berat yang tidak mampu bekerja dan terdaftar dalam DTKS",
+      "requirements": {
+        "hasDisability": true,
+        "maxIncome": 1500000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat Keterangan Tidak Mampu (SKTM)\n4. Surat keterangan disabilitas dari dokter/RS\n5. Pas foto 3x4",
+      "contact": "Direktorat Rehabilitasi Sosial Penyandang Disabilitas, Kemensos\nTel: 021-7854 8000",
+      "legalBasis": "UU No. 8 Tahun 2016",
+      "regulationReference": "UU No. 8 Tahun 2016",
+      "province": null,
+      "keywords": ["disabilitas", "difabel", "penyandang cacat", "rehabilitasi", "disabilitas berat"]
+    },
+    {
+      "id": "rutilahu",
+      "acronym": "RUTILAHU",
+      "shortName": "Rutilahu",
+      "name": "Rehabilitasi Sosial Rumah Tidak Layak Huni (Rutilahu)",
+      "description": "Bantuan perbaikan atau pembangunan rumah untuk keluarga miskin dengan rumah tidak layak huni.",
+      "category": "housing",
+      "provider": "Kemensos",
+      "ministry": "Kementerian Sosial",
+      "benefits": [
+        "Bantuan perbaikan rumah hingga Rp 20.000.000",
+        "Material bangunan",
+        "Pendampingan teknis"
+      ],
+      "benefitsSummary": "Bantuan perbaikan rumah hingga Rp 20.000.000, material bangunan, dan pendampingan teknis",
+      "eligibility": "Keluarga miskin dengan rumah tidak layak huni yang terdaftar dalam DTKS",
+      "requirements": {
+        "maxIncome": 1500000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat Keterangan Tidak Mampu (SKTM)\n4. Surat keterangan rumah tidak layak huni dari RT/RW\n5. Foto rumah",
+      "contact": "Direktorat Rehabilitasi Sosial, Kemensos\nTel: 021-7854 8000",
+      "legalBasis": "Permensos No. 20 Tahun 2017",
+      "regulationReference": "Permensos No. 20 Tahun 2017",
+      "province": null,
+      "keywords": ["rumah", "rutilahu", "tidak layak huni", "perbaikan rumah", "lintangkup"]
+    },
+    {
+      "id": "bantuan-ibu-hamil",
+      "acronym": "PIBIH",
+      "shortName": "Bantuan Ibu Hamil",
+      "name": "Bantuan Ibu Hamil dan Balita Gizi Buruk",
+      "description": "Bantuan nutrisi dan kesehatan untuk ibu hamil dan balita dengan gizi buruk.",
+      "category": "health",
+      "provider": "Kemenkes",
+      "ministry": "Kementerian Kesehatan",
+      "benefits": [
+        "Paket makanan tambahan",
+        "Vitamin dan suplemen gratis",
+        "Pemeriksaan kesehatan rutin",
+        "Bantuan persalinan"
+      ],
+      "benefitsSummary": "Paket makanan tambahan, vitamin dan suplemen gratis, pemeriksaan kesehatan rutin, dan bantuan persalinan",
+      "eligibility": "Ibu hamil dan balita dengan gizi buruk dari keluarga miskin yang terdaftar dalam DTKS",
+      "requirements": {
+        "isPregnant": true,
+        "maxIncome": 2000000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Buku KIA/Buku Kesehatan Ibu\n4. Surat Keterangan Tidak Mampu (SKTM)\n5. Kartu KP-I",
+      "contact": "Pusat Kesehatan Masyarakat (Puskesmas) setempat\nWebsite: kemkes.go.id",
+      "legalBasis": "Permenkes No. 51 Tahun 2016",
+      "regulationReference": "Permenkes No. 51 Tahun 2016",
+      "province": null,
+      "keywords": ["ibu hamil", "balita", "gizi", "nutrisi", "kehamilan", "stunting"]
+    },
+    {
+      "id": "bantuan-petani",
+      "acronym": "BLP",
+      "shortName": "Pupuk Bersubsidi",
+      "name": "Bantuan Langsung Pupuk Bersubsidi",
+      "description": "Subsidi pupuk untuk petani kecil agar biaya produksi pertanian lebih terjangkau.",
+      "category": "cash",
+      "provider": "Kementerian Pertanian",
+      "ministry": "Kementerian Pertanian",
+      "benefits": [
+        "Pupuk urea dengan harga subsidi",
+        "Pupuk NPK dengan harga subsidi",
+        "Alokasi sesuai luas lahan"
+      ],
+      "benefitsSummary": "Pupuk urea dan NPK dengan harga subsidi, alokasi sesuai luas lahan",
+      "eligibility": "Petani kecil dengan lahan terbatas yang terdaftar sebagai penerima subsidi pupuk",
+      "requirements": {
+        "occupation": ["Petani"],
+        "maxIncome": 3000000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Kartu Tani\n4. Surat keterangan lahan dari RT/RW\n5. Foto lahan pertanian",
+      "contact": "Dinas Pertanian Kabupaten/Kota\nWebsite: pertanian.go.id",
+      "legalBasis": "Permentan No. 10 Tahun 2022",
+      "regulationReference": "Permentan No. 10 Tahun 2022",
+      "province": null,
+      "keywords": ["petani", "pupuk", "subsidi", "pertanian", "urea", "npk"]
+    },
+    {
+      "id": "pekerja-informal",
+      "acronym": "BPUM",
+      "shortName": "BPUM",
+      "name": "Bantuan Produktif Usaha Mikro (BPUM)",
+      "description": "Bantuan modal usaha untuk pelaku usaha mikro yang terdampak pandemi atau kesulitan ekonomi.",
+      "category": "cash",
+      "provider": "Kemenkop UKM",
+      "ministry": "Kementerian Koperasi dan UKM",
+      "benefits": [
+        "Bantuan tunai Rp 2.400.000",
+        "Tidak perlu dikembalikan (hibah)",
+        "Dapat digunakan untuk modal usaha"
+      ],
+      "benefitsSummary": "Bantuan tunai Rp 2.400.000 (hibah) untuk modal usaha mikro",
+      "eligibility": "Pelaku usaha mikro yang terdampak pandemi atau kesulitan ekonomi",
+      "requirements": {
+        "occupation": ["Pedagang Kecil", "Pekerja Informal"],
+        "maxIncome": 2500000
+      },
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat keterangan usaha dari RT/RW/Kelurahan\n4. Foto tempat usaha\n5. NIB (Nomor Induk Berusaha) jika ada",
+      "contact": "Dinas Koperasi dan UKM Kabupaten/Kota\nWebsite: kemenkopukm.go.id",
+      "legalBasis": "Perpres No. 82 Tahun 2021",
+      "regulationReference": "Perpres No. 82 Tahun 2021",
+      "province": null,
+      "keywords": ["umkm", "pekerja informal", "pedagang", "modal usaha", "bpum", "hibah"]
+    },
+    {
+      "id": "jamkesda",
+      "acronym": "Jamkesda",
+      "shortName": "Jamkesda",
+      "name": "Jaminan Kesehatan Daerah",
+      "description": "Program jaminan kesehatan yang diselenggarakan oleh pemerintah daerah untuk penduduk yang tidak tercover JKN-PBI.",
+      "category": "health",
+      "provider": "Pemerintah Daerah",
+      "ministry": "Pemerintah Daerah (Dinas Kesehatan/Dinas Sosial)",
+      "benefits": [
+        "Pelayanan kesehatan di fasilitas kesehatan daerah",
+        "Cakupan sesuai regulasi daerah",
+        "Biaya pengobatan dan rawat inap"
+      ],
+      "benefitsSummary": "Pelayanan kesehatan di fasilitas kesehatan daerah dengan cakupan sesuai regulasi daerah, biasanya menanggung biaya pengobatan dan rawat inap",
+      "eligibility": "Penduduk daerah yang:\n- Tidak termasuk dalam penerima JKN-PBI\n- Tidak mampu secara ekonomi\n- Terdaftar dalam DTKS daerah",
+      "requirements": {},
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat Keterangan Tidak Mampu (SKTM)\n4. Kartu Jamkesda (dari Dishubkab)\n5. Surat rujukan dari Puskesmas",
+      "contact": "Dinas Kesehatan / Dinas Sosial Kabupaten/Kota setempat",
+      "legalBasis": "Peraturan Daerah Kabupaten/Kota masing-masing",
+      "regulationReference": "Peraturan Daerah Kabupaten/Kota masing-masing",
+      "province": null,
+      "keywords": ["bpjs daerah", "kesehatan daerah", "kabupaten", "kota", "puskesmas", "rsud"]
+    },
+    {
+      "id": "pis",
+      "acronym": "PIS",
+      "shortName": "PIS",
+      "name": "Program Indonesia Sehat",
+      "description": "Program kesehatan untuk meningkatkan perilaku hidup bersih dan sehat masyarakat, serta meningkatkan akses dan kualitas pelayanan kesehatan.",
+      "category": "health",
+      "provider": "Kemenkes",
+      "ministry": "Kementerian Kesehatan",
+      "benefits": [
+        "Pemerataan akses layanan kesehatan",
+        "Pemberdayaan masyarakat dalam kesehatan",
+        "Dukungan dana operasional untuk Puskesmas",
+        "Jaminan kesehatan untuk masyarakat kurang mampu"
+      ],
+      "benefitsSummary": "Pemerataan akses layanan kesehatan, pemberdayaan masyarakat, dukungan dana operasional Puskesmas, dan jaminan kesehatan untuk masyarakat kurang mampu",
+      "eligibility": "Seluruh masyarakat Indonesia, khususnya:\n- Masyarakat di daerah terpencil\n- Keluarga miskin\n- Masyarakat dengan akses kesehatan terbatas",
+      "requirements": {},
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Kartu BPJS Kesehatan / JKN\n4. Surat keterangan domisili (untuk daerah terpencil)",
+      "contact": "Pusat Kesehatan Masyarakat (Puskesmas) setempat\nWebsite: kemkes.go.id",
+      "legalBasis": "Permenkes No. 39 Tahun 2022",
+      "regulationReference": "Permenkes No. 39 Tahun 2022",
+      "province": null,
+      "keywords": ["kesehatan", "puskesmas", "klinik", "imunisasi", "kb", "ibu", "bayi"]
+    },
+    {
+      "id": "bansos-darurat",
+      "acronym": "Bansos Darurat",
+      "shortName": "Bansos Darurat",
+      "name": "Bantuan Sosial Darurat",
+      "description": "Bantuan sosial yang diberikan dalam situasi darurat seperti bencana alam, krisis kesehatan, atau kondisi darurat lainnya.",
+      "category": "cash",
+      "provider": "Kemensos/BNPB",
+      "ministry": "Kementerian Sosial / BNPB",
+      "benefits": [
+        "Bantuan makanan dan kebutuhan dasar",
+        "Bantuan uang tunai darurat",
+        "Bantuan pemulihan pasca bencana",
+        "Bantuan shelter/perumahan sementara"
+      ],
+      "benefitsSummary": "Bantuan makanan dan kebutuhan dasar, uang tunai darurat, pemulihan pasca bencana, dan shelter/perumahan sementara",
+      "eligibility": "Warga yang:\n- Terdampak bencana alam\n- Terdampak krisis kesehatan (pandemi)\n- Dalam kondisi darurat sesuai penetapan pemerintah\n- Terdaftar dalam DTKS atau data korban bencana",
+      "requirements": {},
+      "documents": "1. KTP\n2. Kartu Keluarga (KK)\n3. Surat keterangan terdampak bencana dari BNPB/Kemensos\n4. Surat keterangan domisili\n5. Data korban bencana dari BPBD daerah",
+      "contact": "BNPB: 021-7882 6912\nKemensos: 021-7854 8000\nWebsite: kemensos.go.id",
+      "legalBasis": "PP No. 63 Tahun 2021 tentang Bantuan Sosial",
+      "regulationReference": "PP No. 63 Tahun 2021",
+      "province": null,
+      "keywords": ["bencana", "gempa", "banjir", "longsor", "tsunami", "darurat", "krisis"]
+    },
+    {
+      "id": "bkk",
+      "acronym": "BKK",
+      "shortName": "BKK",
+      "name": "Bantuan Kecelakaan Kerja",
+      "description": "Jaminan sosial untuk pekerja yang mengalami kecelakaan kerja atau penyakit akibat kerja.",
+      "category": "health",
+      "provider": "BPJS Ketenagakerjaan",
+      "ministry": "BPJS Ketenagakerjaan",
+      "benefits": [
+        "Pelayanan kesehatan gratis di faskes BPJS",
+        "Santunan upah saat tidak bisa kerja",
+        "Santunan cacat sebagian wajar (CPW)",
+        "Santunan cacat total tetap (CTT)",
+        "Santunan kematian",
+        "Beasiswa pendidikan anak jika pekerja meninggal dunia"
+      ],
+      "benefitsSummary": "Pelayanan kesehatan gratis, santunan upah, santunan cacat, santunan kematian, dan beasiswa pendidikan anak",
+      "eligibility": "Seluruh pekerja:\n- Pekerja penerima upah (Buruh)\n- Pekerja bukan penerima upah (mandiri)\n- Tenaga kerja asing\n- Yang terdaftar sebagai peserta BPJS Ketenagakerjaan",
+      "requirements": {},
+      "documents": "1. KTP\n2. NPWP\n3. Formulir pelaporan kecelakaan kerja\n4. Surat keterangan kecelakaan kerja dari perusahaan/puskesmas/RS\n5. Kartu BPJS Ketenagakerjaan\n6. Bukti kecelakaan (foto, laporan polisi jika diperlukan)",
+      "contact": "BPJS Ketenagakerjaan\nTel: 1500-410\nWebsite: bpjsketenagakerjaan.go.id",
+      "legalBasis": "UU No. 24 Tahun 2011 tentang BPJS Ketenagakerjaan",
+      "regulationReference": "UU No. 24 Tahun 2011",
+      "province": null,
+      "keywords": ["bpjs ketenagakerjaan", "buruh", "pekerja", "kecelakaan kerja", "sakit akibat kerja", "perusahaan"]
+    }
+  ]
+}

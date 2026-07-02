@@ -1,0 +1,22 @@
+services:
+  ai-service:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma-data:/data
+      - ../src/data:/app/src/data:ro
+    env_file:
+      - .env
+    environment:
+      - CHROMA_PATH=/data/chroma
+      - FRONTEND_URL=http://localhost:3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  chroma-data:

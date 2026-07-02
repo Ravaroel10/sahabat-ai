@@ -1,0 +1,7 @@
+version: 1.0.0
+
+planningHome: .openspec
+
+schema:
+  id: standard-v1
+  version: 1.0.0

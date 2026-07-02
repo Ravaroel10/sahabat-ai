@@ -1,0 +1,120 @@
+{
+  "institutions": [
+    {
+      "id": "kemensos",
+      "name": "Kementerian Sosial Republik Indonesia",
+      "acronym": "Kemensos",
+      "type": "kementerian",
+      "address": "Jalan Tanah Abang No. 1, Jakarta Pusat 10110",
+      "phone": "021-7854 8000",
+      "email": "humas@kemensos.go.id",
+      "website": "https://kemensos.go.id",
+      "services": [
+        "Program Keluarga Harapan (PKH)",
+        "Bantuan Pangan Non Tunai (BPNT)",
+        "Bantuan Sosial Tunai (BST)",
+        "Asistensi Sosial Lanjut Usia Terlantar (ASLUT)",
+        "Bantuan Sosial Darurat"
+      ],
+      "hotline": "119"
+    },
+    {
+      "id": "bpjs-kesehatan",
+      "name": "BPJS Kesehatan",
+      "acronym": "BPJS Kesehatan",
+      "type": "bpjs",
+      "address": "Jalan Letjen Suprapto No. 19, Cempaka Putih, Jakarta Pusat 10550",
+      "phone": "1500-400",
+      "email": "metadata@bpjs-kesehatan.go.id",
+      "website": "https://bpjs-kesehatan.go.id",
+      "services": [
+        "Jaminan Kesehatan Nasional (JKN)",
+        "Penerima Bantuan Iuran (PBI)",
+        "Fasilitas Kesehatan Tingkat Pertama (FKTP)",
+        "Fasilitas Kesehatan Rujukan (FKRTL)"
+      ],
+      "hotline": "1500-400"
+    },
+    {
+      "id": "bpjs-ketenagakerjaan",
+      "name": "BPJS Ketenagakerjaan",
+      "acronym": "BPJS TK",
+      "type": "bpjs",
+      "address": "Jalan Anggrek No. 27, Kebon Melati, Jakarta Pusat 10220",
+      "phone": "1500-410",
+      "email": "bpjs_kantor@bpjsketenagakerjaan.go.id",
+      "website": "https://bpjsketenagakerjaan.go.id",
+      "services": [
+        "Jaminan Kecelakaan Kerja (JKK)",
+        "Jaminan Kematian (JKM)",
+        "Jaminan Hari Tua (JHT)",
+        "Jaminan Pensiun (JP)"
+      ],
+      "hotline": "1500-410"
+    },
+    {
+      "id": "kemendikbud",
+      "name": "Kementerian Pendidikan dan Kebudayaan",
+      "acronym": "Kemendikbud",
+      "type": "kementerian",
+      "address": "Jalan Sentral Senayan II, Jakarta Pusat 10270",
+      "phone": "021-572 5500",
+      "email": "humas@kemendikbud.go.id",
+      "website": "https://kemendikbud.go.id",
+      "services": [
+        "Kartu Indonesia Pintar (KIP)",
+        "Bantuan Siswa Miskin (BSM)",
+        "Program Indonesia Pintar"
+      ],
+      "hotline": "021-572 5500"
+    },
+    {
+      "id": "kemkes",
+      "name": "Kementerian Kesehatan Republik Indonesia",
+      "acronym": "Kemkes",
+      "type": "kementerian",
+      "address": "Jalan HR Rasuna Said Blok X.5 Kav. 4-9, Jakarta Selatan 12950",
+      "phone": "021-5201590",
+      "email": "rohani@kemkes.go.id",
+      "website": "https://kemkes.go.id",
+      "services": [
+        "Program Indonesia Sehat",
+        "Bantuan Iuran Jaminan Kesehatan",
+        "Pelayanan Kesehatan Desa"
+      ],
+      "hotline": "119"
+    },
+    {
+      "id": "bnpb",
+      "name": "Badan Nasional Penanggulangan Bencana",
+      "acronym": "BNPB",
+      "type": "lembaga",
+      "address": "Jalan Rayoungdana No. 64, Jakarta Selatan 12190",
+      "phone": "021-7882 6912",
+      "email": "penangulangan.bencana@bnpb.go.id",
+      "website": "https://bnpb.go.id",
+      "services": [
+        "Penanggulangan Bencana",
+        "Bantuan Sosial Korban Bencana",
+        "Pemulihan Pascabencana"
+      ],
+      "hotline": "021-7882 6912"
+    },
+    {
+      "id": "dinsos-jakarta",
+      "name": "Dinas Sosial DKI Jakarta",
+      "acronym": "Dinsos DKI",
+      "type": "dinas",
+      "address": "Jalan Tebet Timur Dalam VI, Jakarta Selatan 12820",
+      "phone": "021-8370 0286",
+      "email": "dinsos@jakarta.go.id",
+      "website": "https://dinsos.jakarta.go.id",
+      "services": [
+        "Bantuan Sosial Provinsi",
+        "Rehabilitasi Sosial",
+        "Perlindungan dan Jaminan Sosial"
+      ],
+      "hotline": "120"
+    }
+  ]
+}

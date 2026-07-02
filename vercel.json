@@ -1,0 +1,21 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "bun run build",
+  "devCommand": "bun run dev",
+  "installCommand": "bun install",
+  "env": {
+    "DATABASE_URL": "postgresql://neondb_owner:npg_lwACzr6ZmI9b@ep-jolly-shape-aoaym6v4-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+"BETTER_AUTH_URL":"https://sahabatai-rangers.vercel.app/",
+"NEXT_PUBLIC_APP_URL":"https://sahabatai-rangers.vercel.app/",
+"GOOGLE_CLIENT_ID":"1038467672709-kjckusgpcct484llq1ciruvvcfkarqbb.apps.googleusercontent.com",
+"GOOGLE_CLIENT_SECRET":"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",
+"GOOGLE_GENERATIVE_AI_API_KEY":"AQ.Ab8RN6J7Q0CXyZS7y01h26HW84XFNGKuMAHlQGL2y3dlmz0W2Q",
+"GOOGLE_GENERATIVE_API_KEY":"AQ.Ab8RN6J7Q0CXyZS7y01h26HW84XFNGKuMAHlQGL2y3dlmz0W2Q",
+"AI_SERVICE_URL":"https://haroki.hackclub.app",
+"EXA_API_KEY":"9762a20f-65a8-4a42-b2dd-bd82cfde8d28",
+"EMBEDDING_MODEL":"huggingface",
+"HUGGINGFACE_MODEL":"thenlper/gte-large",
+"NEXTAUTH_URL":"https://sahabatai-rangers.vercel.app",
+"NEXTAUTH_SECRET":"bantu-arah-dev-secret-change-in-production"
+  }
+}
