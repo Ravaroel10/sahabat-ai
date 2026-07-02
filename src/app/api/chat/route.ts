@@ -346,10 +346,30 @@ export async function POST(req: Request) {
                     // (will be started on next token if needed)
                   }
                 } else if (data.type === 'error') {
+                  // Bug 4 fix: don't emit `type: 'error'` — the Vercel AI SDK
+                  // treats that as a stream error event that aborts the
+                  // message and discards already-streamed text-deltas from
+                  // the user's view. Instead, append a graceful error notice
+                  // as a text-delta and finish the stream with
+                  // finishReason='error'. The user keeps what they already
+                  // saw. Mirrors the catch (streamError) pattern below.
+                  const errorMessage =
+                    data.message || 'Terjadi kesalahan pada layanan AI.';
+                  if (!textStarted) {
+                    // Inline marker events (inline-program / inline-action)
+                    // close the current text part and leave textStarted=false.
+                    // Open a fresh text part for the error notice.
+                    writer.write({ type: 'text-start', id: messageId });
+                    textStarted = true;
+                  }
                   writer.write({
-                    type: 'error',
-                    errorText: data.message || 'Terjadi kesalahan.',
+                    type: 'text-delta',
+                    id: messageId,
+                    delta: `\n\n---\n*Maaf, ${errorMessage} Silakan coba lagi.*`,
                   });
+                  writer.write({ type: 'text-end', id: messageId });
+                  textStarted = false;
+                  writer.write({ type: 'finish', finishReason: 'error' });
                 } else if (data.type?.startsWith('data-')) {
                   // Forward custom data parts directly from Python
                   // This allows Python to emit data-program, data-citation, etc. directly

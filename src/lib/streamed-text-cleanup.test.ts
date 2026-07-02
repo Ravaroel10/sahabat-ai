@@ -3,6 +3,7 @@ import {
   convertToConversational,
   removeAiPatterns,
   removeEnglishMixing,
+  stripInlineMarkers,
   stripIntentJson,
   transformContent,
 } from './streamed-text-cleanup'
@@ -101,6 +102,62 @@ describe('stripIntentJson', () => {
     // should be empty string. Locks in that the conditional cleanup
     // doesn't accidentally fire when only phase 1 reduced length.
     expect(stripIntentJson('```json\n{}\n```')).toBe('')
+  })
+})
+
+describe('stripInlineMarkers', () => {
+  it('returns empty input unchanged', () => {
+    expect(stripInlineMarkers('')).toBe('')
+    expect(stripInlineMarkers(null as unknown as string)).toBeNull()
+    expect(stripInlineMarkers(undefined as unknown as string)).toBeUndefined()
+  })
+
+  it('strips a single [PROGRAM:id] marker on its own line', () => {
+    const input = 'Halo\n\n[PROGRAM:pkh]\n\nBerikut info program'
+    expect(stripInlineMarkers(input)).toBe('Halo\n\n\n\nBerikut info program')
+  })
+
+  it('strips a single [ACTION:type] marker', () => {
+    const input = 'Klik tombol di atas\n\n[ACTION:auto-birokrasi]\n\nUntuk lanjut'
+    expect(stripInlineMarkers(input)).toBe('Klik tombol di atas\n\n\n\nUntuk lanjut')
+  })
+
+  it('strips a marker inline within prose (preserves surrounding spaces)', () => {
+    const input = 'Saya rekomendasikan [PROGRAM:pkh] untuk Anda'
+    expect(stripInlineMarkers(input)).toBe('Saya rekomendasikan  untuk Anda')
+  })
+
+  it('strips multiple markers of both types', () => {
+    const input =
+      'Berikut programnya:\n\n[PROGRAM:bpnt]\n\n[PROGRAM:kip]\n\n[ACTION:marketplace]\n\n[ACTION:emergency]'
+    expect(stripInlineMarkers(input)).toBe(
+      'Berikut programnya:\n\n\n\n\n\n\n\n',
+    )
+  })
+
+  it('is case-insensitive (matches Python re.IGNORECASE)', () => {
+    expect(stripInlineMarkers('[program:PKH]')).toBe('')
+    expect(stripInlineMarkers('[Action:AUTO-BIROKRASI]')).toBe('')
+  })
+
+  it('accepts programs/actions with hyphens in the id (e.g. blt-dana-desa)', () => {
+    expect(stripInlineMarkers('[PROGRAM:blt-dana-desa]')).toBe('')
+    expect(stripInlineMarkers('[ACTION:auto-birokrasi]')).toBe('')
+  })
+
+  it('does not strip prose that merely mentions the marker syntax in brackets', () => {
+    // The regex is intentionally specific: only `[PROGRAM:id]` and
+    // `[ACTION:type]` with the canonical id charset are stripped. A
+    // user's quoted `[PROGRAM:foo bar]` with a space inside is not a
+    // valid marker and must survive.
+    expect(stripInlineMarkers('Saya menulis [PROGRAM:foo bar] sebagai contoh')).toBe(
+      'Saya menulis [PROGRAM:foo bar] sebagai contoh',
+    )
+    // Different bracket-wrapped syntactic tokens that share the prefix
+    // shape but aren't markers also survive.
+    expect(stripInlineMarkers('lihat juga [PROGRAM] tanpa titik dua')).toBe(
+      'lihat juga [PROGRAM] tanpa titik dua',
+    )
   })
 })
 
@@ -237,5 +294,23 @@ describe('cleanupStreamedText', () => {
 
   it('returns empty input unchanged', () => {
     expect(cleanupStreamedText('')).toBe('')
+  })
+
+  it('strips residual [PROGRAM:id] markers leaked through the stream', () => {
+    // Bug 2 regression: when Python's token-buffer marker detection
+    // misses a marker split across token boundaries, the marker leaks
+    // through as raw text-delta. The frontend cleanup must strip it
+    // so the user never sees `[PROGRAM:pkh]` in their chat.
+    // Note: `transformContent` (last step) collapses whitespace runs to
+    // a single space, so the marker removal's accidental double-space
+    // is collapsed back to a single space.
+    const input = 'Saya rekomendasikan [PROGRAM:pkh] untuk Anda'
+    expect(cleanupStreamedText(input)).toBe('Saya rekomendasikan untuk kamu')
+  })
+
+  it('strips residual [ACTION:type] markers leaked through the stream', () => {
+    // Transform pipeline collapses the marker removal's double-space.
+    const input = 'Klik tombol [ACTION:auto-birokrasi] untuk lanjut'
+    expect(cleanupStreamedText(input)).toBe('Klik tombol untuk lanjut')
   })
 })

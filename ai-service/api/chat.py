@@ -19,7 +19,6 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
 from orchestrator.orchestrator import orchestrate_chat
-from orchestrator.content_transformer import transform_content
 from schemas.chat import ChatRequest
 
 logger = logging.getLogger(__name__)
@@ -384,13 +383,12 @@ async def chat(request: ChatRequest):
             logger.info(f"      - Actions: {len(actions)} → {len(final_actions)}")
             logger.info(f"      - Next steps: {len(next_steps)} → {len(final_next_steps)}")
 
-            # Emit metadata with transformed final answer
-            logger.info("🔄 Applying content transformation...")
-            transform_start = time.time()
-            final_answer = transform_content(cleaned_response)  # Use cleaned response without JSON
-            transform_time = time.time() - transform_start
-            logger.info(f"   ✅ Transformation completed in {transform_time:.3f}s")
-            
+            # Emit metadata.
+            # Note: the post-LLM tone/Indonesian transformation that
+            # previously ran here was relocated to the frontend (see Bug 1
+            # + Bug 3 fix: src/lib/streamed-text-cleanup.ts). The streamed-
+            # text cleanup runs on render so the response delivered to the
+            # user matches the streamed one.
             metadata = {
                 "type": "metadata",
                 "citations": citations,
@@ -398,7 +396,6 @@ async def chat(request: ChatRequest):
                 "programs": final_programs,  # Use intent-filtered programs
                 "actions": final_actions,  # Use intent-based actions
                 "next_steps": final_next_steps,  # Use intent-based next steps
-                "final_answer": final_answer,
             }
             
             # Assertion: Ensure intent_classification is NEVER included in client-facing metadata
@@ -421,7 +418,6 @@ async def chat(request: ChatRequest):
             logger.info(f"      - Total time: {total_time:.3f}s")
             logger.info(f"      - Orchestrator setup: {orchestrator_time:.3f}s")
             logger.info(f"      - Streaming time: {stream_time:.3f}s")
-            logger.info(f"      - Transformation time: {transform_time:.3f}s")
             if token_count > 0 and stream_time > 0:
                 logger.info(f"      - Tokens/second: {token_count / stream_time:.2f}")
             if intent_classification:

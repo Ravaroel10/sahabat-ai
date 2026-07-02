@@ -17,7 +17,6 @@ import json
 import logging
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
-from orchestrator.content_transformer import transform_content
 from orchestrator.intent_parser import extract_intent_from_response, apply_intent_to_metadata, filter_programs_by_intent
 from tools.rag import search_rag
 from tools.official_search import search_official_web
@@ -152,16 +151,20 @@ def orchestrate_chat_non_streaming(
     conversation: Optional[List[Dict[str, Any]]] = None,
     user_context: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """Non-streaming orchestration. Returns the full response dict."""
+    """Non-streaming orchestration. Returns the full response dict.
+
+    Note: the post-LLM tone/Indonesian transformation that previously ran
+    here was relocated to the frontend (see Bug 1 + Bug 3 fix: src/lib/
+    streamed-text-cleanup.ts). The streamed-text cleanup runs on render
+    so the response delivered to the user matches the streamed one.
+    """
     token_stream, citations, sources, programs, actions, next_steps = orchestrate_chat(
         message, conversation, user_context
     )
 
-    # Consume the stream to get the full text
-    raw_answer = "".join(token_stream)
-
-    # Apply content transformation to the complete answer
-    answer = transform_content(raw_answer)
+    # Consume the stream to get the full text (transformation happens at
+    # render time in the frontend, not here).
+    answer = "".join(token_stream)
 
     return {
         "answer": answer,

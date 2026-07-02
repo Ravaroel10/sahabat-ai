@@ -281,6 +281,29 @@ export function convertToConversational(text: string): string {
 }
 
 /**
+ * Strip residual inline `[PROGRAM:id]` and `[ACTION:type]` markers that
+ * may have leaked through to the user-facing text. Defense in depth:
+ * the Python orchestrator normally catches these on its streaming
+ * `text_buffer` (chat.py `program_match` / `action_match`) and emits
+ * `inline-program` / `inline-action` events instead of passing the raw
+ * marker through as text. But that match runs against accumulated
+ * tokens, so partial matches (e.g. when the LLM tokenizer splits the
+ * marker across boundaries) can flush the raw text-delta before the
+ * full marker is detected. This function cleans up that residue so
+ * users never see raw `[PROGRAM:pkh]` strings.
+ *
+ * Bug 2 fix: marker stripping moved to a single deterministic pass on
+ * the final accumulated text, removing a class of edge cases where the
+ * Python token-window detector missed an intact marker.
+ */
+export function stripInlineMarkers(text: string): string {
+  if (!text || !text.length) return text
+  return text
+    .replace(/\[PROGRAM:[a-z0-9\-]+\]/gi, '')
+    .replace(/\[ACTION:[a-z0-9\-]+\]/gi, '')
+}
+
+/**
  * Strip AI-generated language patterns and re-capitalize the first
  * letter if it became lowercase.
  */
@@ -310,11 +333,20 @@ export function transformContent(text: string): string {
 }
 
 /**
- * Single entry point: strip leaked intent JSON, then apply tone
- * transformation. Use this everywhere a streamed assistant text part
- * is about to be rendered to the user.
+ * Single entry point: strip leaked intent JSON + residual inline
+ * markers, then apply tone transformation. Use this everywhere a
+ * streamed assistant text part is about to be rendered to the user.
+ *
+ * Order matters:
+ *   1. stripIntentJson    — remove leaked JSON intent blocks
+ *   2. stripInlineMarkers  — strip residual `[PROGRAM:id]` / `[ACTION:type]`
+ *                             that Python's token-buffer detector missed
+ *   3. transformContent    — English → conversational → AI-pattern cleanup
  */
 export function cleanupStreamedText(text: string): string {
   if (!text) return text
-  return transformContent(stripIntentJson(text))
+  let result = stripIntentJson(text)
+  result = stripInlineMarkers(result)
+  result = transformContent(result)
+  return result
 }

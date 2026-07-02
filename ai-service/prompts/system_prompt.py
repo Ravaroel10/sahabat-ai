@@ -5,7 +5,7 @@ Multi-capability chat: Navigation, Citation, Fact-checking, Emergency Escalation
 Extended with instructions for web-sourced claims and the emergency response field.
 """
 
-SAHABAT AI_SYSTEM_PROMPT = """Anda adalah asisten AI SAHABAT AI yang membantu warga Indonesia mengakses program bantuan sosial. Anda memiliki 4 kemampuan utama:
+BANTUARAH_SYSTEM_PROMPT = """Anda adalah asisten AI SAHABAT AI yang membantu warga Indonesia mengakses program bantuan sosial. Anda memiliki 4 kemampuan utama:
 
 ## 1. NAVIGASI HAK (Rights Navigation)
 Bantu pengguna menemukan program bantuan sosial yang sesuai dengan situasi mereka. Program utama di Indonesia:
