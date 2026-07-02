@@ -22,6 +22,7 @@ import { Send, AlertTriangle } from 'lucide-react';
 import { Markdown } from '@/components/ui/markdown';
 import { useSession } from '@/lib/auth-client';
 import { useChatPersistence } from './use-chat-persistence';
+import { cleanupStreamedText } from '@/lib/streamed-text-cleanup';
 import {
   CitationRenderer,
   EmergencyAlertRenderer,
@@ -164,30 +165,13 @@ export function UnifiedChatInterface({
                       
                       return allParts.map((part, index) => {
                         if (part.type === 'text') {
-                          let textContent = part.text;
-                          
-                          // Remove JSON blocks that LLM might output (intent_classification, etc.)
-                          // This handles cases where the Python service's filtering didn't catch it
-                          
-                          // Pattern 1: Remove ```json\n{...}\n``` blocks
-                          textContent = textContent.replace(/```json\s*\n[\s\S]*?\n```\s*/gi, '');
-                          
-                          // Pattern 2: Remove standalone "json" keyword followed by JSON object
-                          // Handles: json\n{\n  "intent_classification": {...}\n}\n
-                          textContent = textContent.replace(/^json\s*\n\s*\{[\s\S]*?"intent_classification"[\s\S]*?\}\s*\n/i, '');
-                          
-                          // Pattern 3: Remove plain JSON object at the start
-                          textContent = textContent.replace(/^\s*\{\s*"intent_classification"[\s\S]*?\}\s*\n/i, '');
-                          
-                          // Pattern 4: Clean up any remaining markdown code block wrappers
-                          if (textContent.trim().startsWith('```') && textContent.trim().endsWith('```')) {
-                            textContent = textContent.replace(/^```[a-z]*\s*\n?/i, '');
-                            textContent = textContent.replace(/\n?```\s*$/i, '');
-                          }
-                          
-                          // Trim whitespace
-                          textContent = textContent.trim();
-                          
+                          // Single-pass cleanup: strip leaked intent-JSON
+                          // and apply formal→conversational Indonesian tone
+                          // transformation. Fixes Bug 1 (transform computed in
+                          // Python but never delivered) and Bug 3 (token-by-token
+                          // JSON filter was fragile). See src/lib/streamed-text-cleanup.ts.
+                          let textContent = cleanupStreamedText(part.text).trim();
+
                           // Skip rendering if text is empty after cleanup
                           if (!textContent) return null;
                           
