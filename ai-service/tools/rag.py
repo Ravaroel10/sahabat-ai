@@ -43,7 +43,7 @@ def search_rag(query: str, k: int = 5) -> List[Dict[str, Any]]:
     # Query ChromaDB
     query_start = time.time()
     results = chroma.query(
-        collection_name="SAHABAT AI_knowledge",
+        collection_name="bantu_arah_knowledge",
         query_texts=[query],
         n_results=k,
         embedding_function=embedding_fn,

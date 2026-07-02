@@ -26,7 +26,7 @@ from services.embeddings import get_embedding_function
 # In Docker, this will be mounted at /app/src/data
 DATA_DIR = "/app/src/data"
 
-COLLECTION_NAME = "SAHABAT AI_knowledge"
+COLLECTION_NAME = "bantu_arah_knowledge"
 
 
 def ingest_all() -> None:
