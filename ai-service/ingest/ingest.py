@@ -13,6 +13,7 @@ Reads from the Next.js src/data/ directory (relative to project root).
 import json
 import os
 import sys
+from pathlib import Path
 from typing import Any, Dict, List
 
 from langchain_core.documents import Document
@@ -22,9 +23,19 @@ from app.config import get_settings
 from database.chroma import get_chroma_service
 from services.embeddings import get_embedding_function
 
-# Path to the Next.js data directory (relative to project root)
-# In Docker, this will be mounted at /app/src/data
-DATA_DIR = "/app/src/data"
+# Path to the Next.js data directory. Auto-detected from this file's
+# location so it works in BOTH Docker and local development without
+# configuration:
+#   Docker:   ingest.py lives at /app/ai-service/ingest/ingest.py,
+#             data lives at /app/src/data → resolves to /app/src/data
+#   Local:    ingest.py lives at <project>/ai-service/ingest/ingest.py,
+#             data lives at <project>/src/data → resolves correctly via
+#             three-parent navigation up the resolved absolute path
+# Override with the DATA_DIR env var if your layout differs (e.g. data
+# shared between two containers).
+DATA_DIR = os.getenv("DATA_DIR") or str(
+    Path(__file__).resolve().parent.parent.parent / "src" / "data"
+)
 
 COLLECTION_NAME = "bantu_arah_knowledge"
 
@@ -249,8 +260,9 @@ def _template_to_text(template: Dict[str, Any]) -> str:
 
 
 if __name__ == "__main__":
-    print("Starting SAHABAT AI knowledge base ingest...")
+    print("Starting bantu_arah knowledge base ingest...")
     print(f"  Data directory: {DATA_DIR}")
+    print(f"  Data directory exists: {os.path.isdir(DATA_DIR)}")
     print(f"  ChromaDB path: {get_settings().CHROMA_PATH}")
     print()
     ingest_all()
