@@ -1,0 +1,573 @@
+{
+  "duplicates": [
+    {
+      "firstFile": {
+        "end": 95,
+        "endLoc": {
+          "column": 3,
+          "line": 95,
+          "position": 3604
+        },
+        "name": "app\\(main)\\programs\\[id]\\page.tsx",
+        "start": 85,
+        "startLoc": {
+          "column": 28,
+          "line": 85,
+          "position": 3113
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 290,
+        "endLoc": {
+          "column": 3,
+          "line": 290,
+          "position": 11121
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 280,
+        "startLoc": {
+          "column": 25,
+          "line": 280,
+          "position": 10632
+        }
+      },
+      "tokens": 100
+    },
+    {
+      "firstFile": {
+        "end": 394,
+        "endLoc": {
+          "column": 29,
+          "line": 394,
+          "position": 15399
+        },
+        "name": "app\\(main)\\programs\\[id]\\page.tsx",
+        "start": 386,
+        "startLoc": {
+          "column": 54,
+          "line": 386,
+          "position": 15110
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 408,
+        "endLoc": {
+          "column": 29,
+          "line": 408,
+          "position": 16017
+        },
+        "name": "app\\(main)\\programs\\[id]\\page.tsx",
+        "start": 400,
+        "startLoc": {
+          "column": 56,
+          "line": 400,
+          "position": 15731
+        }
+      },
+      "tokens": 51
+    },
+    {
+      "firstFile": {
+        "end": 552,
+        "endLoc": {
+          "column": 35,
+          "line": 552,
+          "position": 22415
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 534,
+        "startLoc": {
+          "column": 49,
+          "line": 534,
+          "position": 21587
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 19,
+      "secondFile": {
+        "end": 584,
+        "endLoc": {
+          "column": 35,
+          "line": 584,
+          "position": 24121
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 566,
+        "startLoc": {
+          "column": 48,
+          "line": 566,
+          "position": 23309
+        }
+      },
+      "tokens": 94
+    },
+    {
+      "firstFile": {
+        "end": 549,
+        "endLoc": {
+          "column": 20,
+          "line": 549,
+          "position": 22316
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 534,
+        "startLoc": {
+          "column": 49,
+          "line": 534,
+          "position": 21587
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 16,
+      "secondFile": {
+        "end": 613,
+        "endLoc": {
+          "column": 20,
+          "line": 613,
+          "position": 25730
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 598,
+        "startLoc": {
+          "column": 51,
+          "line": 598,
+          "position": 25001
+        }
+      },
+      "tokens": 87
+    },
+    {
+      "firstFile": {
+        "end": 546,
+        "endLoc": {
+          "column": 27,
+          "line": 546,
+          "position": 22239
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 534,
+        "startLoc": {
+          "column": 49,
+          "line": 534,
+          "position": 21587
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 630,
+        "endLoc": {
+          "column": 21,
+          "line": 630,
+          "position": 26512
+        },
+        "name": "app\\(main)\\programs\\page.tsx",
+        "start": 618,
+        "startLoc": {
+          "column": 35,
+          "line": 618,
+          "position": 25932
+        }
+      },
+      "tokens": 75
+    },
+    {
+      "firstFile": {
+        "end": 209,
+        "endLoc": {
+          "column": 9,
+          "line": 209,
+          "position": 4005
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 198,
+        "startLoc": {
+          "column": 28,
+          "line": 198,
+          "position": 3729
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 364,
+        "endLoc": {
+          "column": 9,
+          "line": 364,
+          "position": 10888
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 353,
+        "startLoc": {
+          "column": 34,
+          "line": 353,
+          "position": 10617
+        }
+      },
+      "tokens": 59
+    },
+    {
+      "firstFile": {
+        "end": 226,
+        "endLoc": {
+          "column": 36,
+          "line": 226,
+          "position": 4781
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 198,
+        "startLoc": {
+          "column": 28,
+          "line": 198,
+          "position": 3729
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 29,
+      "secondFile": {
+        "end": 496,
+        "endLoc": {
+          "column": 36,
+          "line": 496,
+          "position": 16357
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 468,
+        "startLoc": {
+          "column": 33,
+          "line": 468,
+          "position": 15305
+        }
+      },
+      "tokens": 201
+    },
+    {
+      "firstFile": {
+        "end": 209,
+        "endLoc": {
+          "column": 40,
+          "line": 209,
+          "position": 4036
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 198,
+        "startLoc": {
+          "column": 28,
+          "line": 198,
+          "position": 3729
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 12,
+      "secondFile": {
+        "end": 599,
+        "endLoc": {
+          "column": 43,
+          "line": 599,
+          "position": 20409
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 588,
+        "startLoc": {
+          "column": 29,
+          "line": 588,
+          "position": 20104
+        }
+      },
+      "tokens": 68
+    },
+    {
+      "firstFile": {
+        "end": 253,
+        "endLoc": {
+          "column": 43,
+          "line": 253,
+          "position": 5939
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 243,
+        "startLoc": {
+          "column": 55,
+          "line": 243,
+          "position": 5469
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 392,
+        "endLoc": {
+          "column": 43,
+          "line": 392,
+          "position": 12022
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 382,
+        "startLoc": {
+          "column": 47,
+          "line": 382,
+          "position": 11552
+        }
+      },
+      "tokens": 139
+    },
+    {
+      "firstFile": {
+        "end": 256,
+        "endLoc": {
+          "column": 34,
+          "line": 256,
+          "position": 6096
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 250,
+        "startLoc": {
+          "column": 58,
+          "line": 250,
+          "position": 5826
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 7,
+      "secondFile": {
+        "end": 528,
+        "endLoc": {
+          "column": 34,
+          "line": 528,
+          "position": 17699
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 522,
+        "startLoc": {
+          "column": 63,
+          "line": 522,
+          "position": 17429
+        }
+      },
+      "tokens": 70
+    },
+    {
+      "firstFile": {
+        "end": 270,
+        "endLoc": {
+          "column": 43,
+          "line": 270,
+          "position": 6799
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 262,
+        "startLoc": {
+          "column": 62,
+          "line": 262,
+          "position": 6439
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 397,
+        "endLoc": {
+          "column": 43,
+          "line": 397,
+          "position": 12264
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 389,
+        "startLoc": {
+          "column": 53,
+          "line": 389,
+          "position": 11904
+        }
+      },
+      "tokens": 104
+    },
+    {
+      "firstFile": {
+        "end": 292,
+        "endLoc": {
+          "column": 49,
+          "line": 292,
+          "position": 7915
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 282,
+        "startLoc": {
+          "column": 59,
+          "line": 282,
+          "position": 7421
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 11,
+      "secondFile": {
+        "end": 409,
+        "endLoc": {
+          "column": 49,
+          "line": 409,
+          "position": 12890
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 399,
+        "startLoc": {
+          "column": 57,
+          "line": 399,
+          "position": 12396
+        }
+      },
+      "tokens": 139
+    },
+    {
+      "firstFile": {
+        "end": 322,
+        "endLoc": {
+          "column": 30,
+          "line": 322,
+          "position": 9236
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 314,
+        "startLoc": {
+          "column": 8,
+          "line": 314,
+          "position": 8940
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 9,
+      "secondFile": {
+        "end": 457,
+        "endLoc": {
+          "column": 30,
+          "line": 457,
+          "position": 14970
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 449,
+        "startLoc": {
+          "column": 8,
+          "line": 449,
+          "position": 14682
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 366,
+        "endLoc": {
+          "column": 8,
+          "line": 366,
+          "position": 10975
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 354,
+        "startLoc": {
+          "column": 14,
+          "line": 354,
+          "position": 10663
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 13,
+      "secondFile": {
+        "end": 600,
+        "endLoc": {
+          "column": 36,
+          "line": 600,
+          "position": 20447
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 589,
+        "startLoc": {
+          "column": 14,
+          "line": 589,
+          "position": 20150
+        }
+      },
+      "tokens": 58
+    },
+    {
+      "firstFile": {
+        "end": 384,
+        "endLoc": {
+          "column": 56,
+          "line": 384,
+          "position": 11670
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 377,
+        "startLoc": {
+          "column": 73,
+          "line": 377,
+          "position": 11367
+        }
+      },
+      "format": "tsx",
+      "fragment": "",
+      "lines": 8,
+      "secondFile": {
+        "end": 517,
+        "endLoc": {
+          "column": 56,
+          "line": 517,
+          "position": 17179
+        },
+        "name": "components\\documents\\pdf-templates.tsx",
+        "start": 510,
+        "startLoc": {
+          "column": 8,
+          "line": 510,
+          "position": 16882
+        }
+      },
+      "tokens": 77
+    }
+  ],
+  "statistics": {
+    "detectionDate": "2026-07-02T05:01:29.496Z",
+    "formats": {
+      "tsx": {
+        "clones": 15,
+        "duplicatedLines": 174,
+        "duplicatedTokens": 1380,
+        "lines": 7880,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 2.2081218274111674,
+        "percentageTokens": 3.525984976237927,
+        "sources": 42,
+        "tokens": 39138
+      }
+    },
+    "total": {
+      "clones": 15,
+      "duplicatedLines": 174,
+      "duplicatedTokens": 1380,
+      "lines": 7880,
+      "newClones": 0,
+      "newDuplicatedLines": 0,
+      "percentage": 2.2081218274111674,
+      "percentageTokens": 3.525984976237927,
+      "sources": 42,
+      "tokens": 39138
+    }
+  }
+}

@@ -246,15 +246,3 @@ export type MessagePart =
   | ActionButtonsPart
   | EmergencyAlertPart
   | NextStepsPart;
-
-/**
- * Extended message type for Vercel AI SDK integration
- */
-export interface SAHABAT AIMessage {
-  id: string;
-  role: 'user' | 'assistant' | 'system';
-  parts: MessagePart[];
-  createdAt: Date;
-  // For context preservation
-  extractedCriteria?: UserCriteria;
-}

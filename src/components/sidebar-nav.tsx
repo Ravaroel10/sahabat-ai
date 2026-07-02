@@ -184,7 +184,7 @@ function SidebarNavContent() {
                 >
                 <div className="flex flex-row gap-3">
                   <MessageCircle className="h-5 w-5" />
-                  <span>SAHABAT AI</span>
+                  <span>AI Chat</span>
                 </div>
               </button>
               {session && (

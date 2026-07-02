@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-5xl rounded-full bg-white/80 backdrop-blur-sm px-6 py-3 flex items-center justify-between border border-[#e05e3f]/10">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full bg-[#e05e3f] flex items-center justify-center text-white font-bold text-sm">
-              BA
+              SA
             </div>
             <span className="font-bold text-lg text-[#191816] tracking-tight">
               SAHABAT AI<span className="text-[#e05e3f]">.</span>
@@ -39,7 +39,7 @@ export default function HomePage() {
         </div>
 
         <h1 className="font-bold text-4xl sm:text-6xl tracking-tight leading-tight text-[#191816] max-w-4xl">
-          Biarkan AI Membimbing <br />
+          SAHABAT AI Membimbing <br />
           <span className="text-[#e05e3f]">Akses Hak Sosial</span> Keluarga Anda.
         </h1>
 
@@ -70,11 +70,11 @@ export default function HomePage() {
                   <div className="w-3 h-3 rounded-full bg-[#191816]/10" />
                   <div className="w-3 h-3 rounded-full bg-[#eae4dc]" />
                 </div>
-                <span className="text-[11px] font-mono text-[#191816]/50 ml-3">SAHABAT AI.app — Chat · Marketplace · Auto-Birokrasi</span>
+                <span className="text-[11px] font-mono text-[#191816]/50 ml-3">bantu-arah.app — Chat · Marketplace · Auto-Birokrasi</span>
               </div>
               <div className="flex items-center gap-1.5 bg-[#e05e3f]/10 text-[#e05e3f] px-2.5 py-0.5 rounded-full text-[10px] font-bold">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#e05e3f] animate-pulse" />
-                AI Aktif
+                RAG + Streaming
               </div>
             </div>
 
@@ -110,7 +110,7 @@ export default function HomePage() {
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
                     <Store size={22} className="text-[#e05e3f] mb-3" />
                     <h5 className="font-bold text-xs text-[#191816] mb-1">2. Marketplace Program</h5>
-                    <p className="text-[11px] text-[#191816]/60 leading-normal">14+ program bantuan (PKH, BPNT, KIP, JKN-PBI, dll) dengan filter kelayakan otomatis. URL filter dapat dishare.</p>
+                    <p className="text-[11px] text-[#191816]/60 leading-normal">14+ program bantuan (PKH, BPNT, KIP, BPJS PBI, dll) dengan filter kelayakan otomatis. URL filter dapat dishare.</p>
                   </div>
 
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
@@ -136,7 +136,7 @@ export default function HomePage() {
           <div className="bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10">
             <span className="font-black text-3xl block">14+ Program</span>
             <span className="text-xs font-semibold text-white/90 mt-1 block">Bantuan Sosial Terdaftar</span>
-            <p className="text-[11px] text-white/70 mt-2 leading-relaxed">PKH, BPNT, KIP, JKN-PBI, ASLUT, ASOD, Rutilahu, BPUM, BLP, PIBIH, BKK, Jamkesda, PIS, Bansos Darurat — filter kelayakan otomatis berdasarkan kondisi Anda.</p>
+            <p className="text-[11px] text-white/70 mt-2 leading-relaxed">PKH, BPNT, KIP, BPJS PBI, ASLUT, ASOD, Rutilahu, BPUM, BLP, JKN, Jamkesda, PIS, Bansos Darurat, BKK — filter kelayakan otomatis berdasarkan kondisi Anda.</p>
           </div>
           <div className="bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15">
             <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
@@ -152,7 +152,7 @@ export default function HomePage() {
       </section>
 
       {/* Architecture & Features Section */}
-      <section className="py-20 bg-white border-y border-[#e05e3f]/10 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-white border-y border-[#e05e3f]/10 px-4 sm:px-6 lg:px-8" id="solusi-ai">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 flex flex-col gap-6 text-left">
             <h2 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-[#191816]">
@@ -162,7 +162,7 @@ export default function HomePage() {
               SAHABAT AI menutup celah informasi antara warga prasejahtera dan program pemerintah melalui tiga fitur yang saling terhubung: tanya jawab AI bersitasi, direktori program yang dapat difilter, dan generator draf dokumen untuk dibawa ke kelurahan.
             </p>
             <p className="text-[#191816]/70 text-xs sm:text-sm leading-relaxed">
-              Semua fitur dapat digunakan tanpa login. Login opsional — hanya untuk menyimpan riwayat chat antar sesi.
+              Semua fitur dapat digunakan tanpa login. Login hanya untuk menyimpan riwayat chat dan draf dokumen antar sesi.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
@@ -226,7 +226,7 @@ export default function HomePage() {
       {/* Tech Stack Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto" id="cara-kerja">
         <h2 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-[#191816] max-w-2xl mx-auto text-center">
-          Cara Kerja & Arsitektur
+          Cara Kerja
         </h2>
         <p className="text-[#191816]/70 text-xs sm:text-sm mt-3 max-w-lg mx-auto text-center">
           Frontend Next.js 16 + backend FastAPI + knowledge base ChromaDB. Tiap fitur berdiri sendiri dan saling berbagi konteks.
@@ -267,38 +267,10 @@ export default function HomePage() {
             );
           })}
         </div>
-
-        {/* Tech stack pill row */}
-        <div className="mt-14 max-w-4xl mx-auto">
-          <p className="text-[10px] font-mono font-bold text-[#191816]/40 uppercase tracking-widest text-center mb-4">Stack</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {[
-              "Next.js 16",
-              "React 19",
-              "TypeScript",
-              "Vercel AI SDK",
-              "FastAPI",
-              "LiteLLM",
-              "ChromaDB",
-              "Drizzle ORM",
-              "PostgreSQL",
-              "Better Auth",
-              "shadcn/ui",
-              "@react-pdf/renderer",
-            ].map((tech) => (
-              <span
-                key={tech}
-                className="text-[10px] font-mono font-semibold text-[#191816]/75 bg-white border border-[#e05e3f]/15 rounded-full px-3 py-1.5"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* Audience Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <section className="pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
         <h2 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-[#191816] max-w-2xl mx-auto text-center">
           Untuk Siapa SAHABAT AI
         </h2>
@@ -349,10 +321,10 @@ export default function HomePage() {
           <div className="flex flex-col items-center md:items-start gap-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-white text-[#191816] flex items-center justify-center font-bold text-sm">
-                BA
+                SA
               </div>
               <span className="font-bold text-base text-white tracking-tight">
-                SAHABAT AI<span className="text-[#e05e3f]">.</span>
+                SAHABAT<span className="text-[#e05e3f]">.</span>
               </span>
             </div>
             <p className="text-[11px] text-[#faf6f2]/55 text-center md:text-left max-w-xs mt-1 leading-normal">
@@ -372,7 +344,7 @@ export default function HomePage() {
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Layanan Aktif
+              Next.js 16 · React 19 · FastAPI · ChromaDB
             </span>
           </div>
         </div>
