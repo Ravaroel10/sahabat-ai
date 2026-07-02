@@ -404,6 +404,12 @@ async def chat(request: ChatRequest):
             from orchestrator.intent_parser import extract_intent_from_response, apply_intent_to_metadata, filter_programs_by_intent
             
             full_response = "".join(accumulated)
+            # Log the raw response for debugging — truncated to avoid
+            # blowing up log files on very long generations.
+            logger.info(f"   📝 Raw LLM response ({len(full_response)} chars):")
+            logger.info(f"      {full_response[:500]}{'...' if len(full_response) > 500 else ''}")
+            if len(full_response) > 500:
+                logger.info(f"      ... (truncated, {len(full_response) - 500} more chars)")
             intent_classification, cleaned_response = extract_intent_from_response(full_response)
             
             # Override metadata based on LLM's intent classification
