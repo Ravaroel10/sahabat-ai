@@ -25,6 +25,41 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+import re as _re
+
+_PROGRAM_MARKER_RE = _re.compile(r'\[PROGRAM:([a-z0-9\-]+)\]')
+_ACTION_MARKER_RE = _re.compile(r'\[ACTION:([a-z0-9\-]+)\]')
+
+
+def _could_be_partial_marker(text: str) -> bool:
+    """Check if the end of *text* could be the beginning of an
+    ``[PROGRAM:...]`` or ``[ACTION:...]`` marker that hasn't finished yet.
+
+    Finds the last ``[`` that is **not** followed by ``]`` and checks
+    whether the text from that ``[`` onward is a prefix of
+    ``[PROGRAM:`` or ``[ACTION:`` — or already starts with one of those
+    (meaning the payload is still growing).
+
+    Returns ``True`` when we should hold the buffer back; ``False`` when
+    it is safe to emit.
+    """
+    last_open = text.rfind('[')
+    if last_open < 0:
+        return False
+    # If a ] appears after the last [, the bracket pair is complete —
+    # either it matched a marker (handled by the regex) or it's regular
+    # prose (e.g. markdown link).  Either way, not a partial marker.
+    if ']' in text[last_open:]:
+        return False
+    tail = text[last_open:].upper()
+    for prefix in ("[PROGRAM:", "[ACTION:"):
+        # prefix.startswith(tail) → tail is a partial prefix (e.g. "[PRO")
+        # tail.startswith(prefix) → prefix complete, payload growing (e.g. "[PROGRAM:bp")
+        # tail == prefix           → prefix complete, no payload yet
+        if prefix.startswith(tail) or tail.startswith(prefix):
+            return True
+    return False
+
 
 def build_contextual_next_steps(
     programs: List[Dict[str, Any]],
@@ -187,6 +222,7 @@ async def chat(request: ChatRequest):
         brace_count = 0
         text_buffer = ""  # Buffer for detecting inline program markers
         text_flushed = False  # True once any prose has been yielded to the client
+        skip_closing_fence = False  # Consume the ``` fence after a plain-JSON close
         
         try:
             logger.info("📡 Starting SSE stream...")
@@ -200,7 +236,30 @@ async def chat(request: ChatRequest):
                 accumulated.append(token)
                 token_count += 1
                 
+                # Debug: log every token and JSON state
+                if token_count <= 10 or token_count % 50 == 0:
+                    logger.info(f"   🔢 Token {token_count}: in_json_block={in_json_block}, text_flushed={text_flushed}, token={repr(token[:50])}")
+                
+                # If we just closed a JSON block via brace-counting, the
+                # next token may be the closing ``` fence.  Consume it
+                # silently so it never reaches the client.  If the fence
+                # shares a chunk with prose, carry the prose forward.
+                if skip_closing_fence:
+                    skip_closing_fence = False
+                    if "```" in token:
+                        idx = token.rfind("```")
+                        after = token[idx + 3:].lstrip() if idx >= 0 else ""
+                        logger.info("   🪟 Consumed closing ``` fence after plain JSON close")
+                        if after:
+                            text_buffer += after  # APPEND to any text from }} extraction
+                            logger.info(f"   📝 Carried forward text after fence: {after[:50]}...")
+                        continue  # Always continue — fence consumed, skip text_buffer += token
+                    # else: not a fence token, process normally
+                
                 # Detect JSON block start (either ```json or plain json {)
+                # BUT: Only if we haven't already flushed text AND we're not already in a JSON block
+                # Once we close the first JSON block and process tokens after it, we should never
+                # re-enter JSON filtering mode because any subsequent { or ``` is actual content
                 if not in_json_block:
                     # Only attempt JSON detection BEFORE any prose has
                     # been flushed to the client. Once text_flushed is
@@ -267,27 +326,32 @@ async def chat(request: ChatRequest):
                 if in_json_block:
                     json_buffer += token
                     brace_count += token.count("{") - token.count("}")
+                    logger.info(f"   🔍 In JSON block: buffer_len={len(json_buffer)}, brace_count={brace_count}, token={repr(token[:30])}")
                     
                     # Check if JSON block ended (markdown or plain JSON)
                     if "```" in token and len(json_buffer) > 10:  # Closing ``` after some content
                         in_json_block = False
+                        text_flushed = True  # PERMANENTLY disable JSON detection
                         logger.info(f"   ✅ Filtered complete JSON block ({len(json_buffer)} chars)")
+                        logger.info(f"   🚫 Permanently disabled JSON detection (text_flushed=True)")
                         # Extract text after the closing ``` fence so prose that
                         # shares a chunk with the closing marker is not lost.
-                        # Nemotron and other large models commonly emit the
-                        # JSON preamble + first prose tokens in the same chunk.
                         idx = token.rfind("```")
                         after = token[idx + 3:] if idx >= 0 else ""
-                        if after.strip():
+                        after = after.lstrip()
+                        if after:
                             text_buffer = after
                             logger.info(f"   📝 Carried forward text after fence: {after[:50]}...")
                         json_buffer = ""
                         brace_count = 0
-                        continue
+                        continue  # Token consumed — text_buffer carries any prose after fence
                     elif "{" in json_buffer and brace_count == 0 and len(json_buffer) > 20:
-                        # Plain JSON object closed
+                        # Plain JSON object closed (brace-counting, no ``` fence in this token)
                         in_json_block = False
+                        text_flushed = True  # FIX: permanently disable JSON re-detection
+                        skip_closing_fence = True  # Next ``` token is the closing fence
                         logger.info(f"   ✅ Filtered complete JSON block ({len(json_buffer)} chars)")
+                        logger.info(f"   🚫 Permanently disabled JSON detection (text_flushed=True)")
                         # Extract text after the closing } so prose that shares
                         # a chunk with the brace is not lost.
                         idx = token.rfind("}")
@@ -298,97 +362,91 @@ async def chat(request: ChatRequest):
                                 logger.info(f"   📝 Carried forward text after brace: {after[:50]}...")
                         json_buffer = ""
                         brace_count = 0
-                        continue
+                        continue  # Token consumed — skip to closing fence or next prose
                     else:
                         # Still inside JSON block, keep filtering
                         continue
                 
-                # Buffer tokens to detect inline markers [PROGRAM:id] or [ACTION:type]
+                # Add token to text_buffer for inline marker detection
                 text_buffer += token
                 
-                # Check for complete inline program marker
-                import re
-                program_marker_pattern = r'\[PROGRAM:([a-z0-9\-]+)\]'
-                program_match = re.search(program_marker_pattern, text_buffer)
-                
-                # Check for complete inline action marker
-                action_marker_pattern = r'\[ACTION:([a-z0-9\-]+)\]'
-                action_match = re.search(action_marker_pattern, text_buffer)
-                
-                # Process program marker if found
-                if program_match:
-                    # Found a complete program marker
-                    program_id = program_match.group(1)
-                    before_marker = text_buffer[:program_match.start()]
-                    after_marker = text_buffer[program_match.end():]
-                    
-                    # Stream text before marker
-                    if before_marker:
-                        event = {"type": "token", "data": before_marker}
-                        yield f"data: {json.dumps(event)}\n\n"
-                        text_flushed = True
-                    
-                    # Find program data from the programs list
-                    program_data = None
-                    for prog in programs:
-                        if prog.get("id") == program_id:
-                            program_data = prog
-                            break
-                    
-                    # Emit inline program card event with full program data
-                    logger.info(f"   💡 Detected inline program marker: {program_id}")
-                    if program_data:
-                        logger.info(f"      ✅ Found program data: {program_data.get('name', 'Unknown')}")
-                        inline_event = {
-                            "type": "inline-program",
-                            "program_id": program_id,
-                            "program": program_data  # Send full program data
-                        }
+                # Check if text_buffer has content that should be emitted
+                # We emit immediately unless we're potentially in the middle of a marker
+                if text_buffer and not in_json_block:
+                    # Check if we might be in the middle of a marker pattern.
+                    # If the buffer's tail could be a partial [PROGRAM:...] or
+                    # [ACTION:...] marker, hold back until the ] arrives.
+                    if _could_be_partial_marker(text_buffer):
+                        logger.info(f"   ⏸️  Holding text (potential marker): '{text_buffer[-20:]}'")
                     else:
-                        logger.info(f"      ⚠️  Program data not found, sending ID only")
-                        inline_event = {
-                            "type": "inline-program",
-                            "program_id": program_id
-                        }
-                    yield f"data: {json.dumps(inline_event)}\n\n"
-                    
-                    # Keep the rest in buffer
-                    text_buffer = after_marker
-                
-                # Process action marker if found (and no program marker in same position)
-                elif action_match:
-                    # Found a complete action marker
-                    action_type = action_match.group(1)
-                    before_marker = text_buffer[:action_match.start()]
-                    after_marker = text_buffer[action_match.end():]
-                    
-                    # Stream text before marker
-                    if before_marker:
-                        event = {"type": "token", "data": before_marker}
-                        yield f"data: {json.dumps(event)}\n\n"
-                        text_flushed = True
-                    
-                    # Emit inline action button event
-                    logger.info(f"   💡 Detected inline action marker: {action_type}")
-                    action_event = {
-                        "type": "inline-action",
-                        "action_type": action_type
-                    }
-                    yield f"data: {json.dumps(action_event)}\n\n"
-                    
-                    # Keep the rest in buffer
-                    text_buffer = after_marker
-                
-                else:
-                    # No complete marker yet, check if we should flush some text
-                    # Flush if buffer is getting long and no potential marker
-                    if len(text_buffer) > 100 and '[PROGRAM:' not in text_buffer[-20:] and '[ACTION:' not in text_buffer[-20:]:
-                        # Flush most of buffer, keep last 20 chars in case marker is split
-                        to_flush = text_buffer[:-20]
-                        text_buffer = text_buffer[-20:]
-                        event = {"type": "token", "data": to_flush}
-                        yield f"data: {json.dumps(event)}\n\n"
-                        text_flushed = True
+                        # Safe to emit - check for complete markers first
+                        program_match = _PROGRAM_MARKER_RE.search(text_buffer)
+                        action_match = _ACTION_MARKER_RE.search(text_buffer)
+                        
+                        # Process program marker if found
+                        if program_match:
+                            logger.info(f"   🎯 Program marker found: {program_match.group(0)}")
+                            program_id = program_match.group(1)
+                            before_marker = text_buffer[:program_match.start()]
+                            after_marker = text_buffer[program_match.end():]
+                            
+                            if before_marker:
+                                event = {"type": "token", "data": before_marker}
+                                yield f"data: {json.dumps(event)}\n\n"
+                                text_flushed = True
+                            
+                            program_data = None
+                            for prog in programs:
+                                if prog.get("id") == program_id:
+                                    program_data = prog
+                                    break
+                            
+                            logger.info(f"   💡 Detected inline program marker: {program_id}")
+                            if program_data:
+                                logger.info(f"      ✅ Found program data: {program_data.get('name', 'Unknown')}")
+                                inline_event = {
+                                    "type": "inline-program",
+                                    "program_id": program_id,
+                                    "program": program_data
+                                }
+                            else:
+                                logger.info(f"      ⚠️  Program data not found, sending ID only")
+                                inline_event = {
+                                    "type": "inline-program",
+                                    "program_id": program_id
+                                }
+                            yield f"data: {json.dumps(inline_event)}\n\n"
+                            
+                            text_buffer = after_marker
+                        
+                        # Process action marker if found (and no program marker)
+                        elif action_match:
+                            logger.info(f"   🎯 Action marker found: {action_match.group(0)}")
+                            action_type = action_match.group(1)
+                            before_marker = text_buffer[:action_match.start()]
+                            after_marker = text_buffer[action_match.end():]
+                            
+                            if before_marker:
+                                event = {"type": "token", "data": before_marker}
+                                yield f"data: {json.dumps(event)}\n\n"
+                                text_flushed = True
+                            
+                            logger.info(f"   💡 Detected inline action marker: {action_type}")
+                            action_event = {
+                                "type": "inline-action",
+                                "action_type": action_type
+                            }
+                            yield f"data: {json.dumps(action_event)}\n\n"
+                            
+                            text_buffer = after_marker
+                        
+                        else:
+                            # No marker found - emit the text immediately
+                            logger.info(f"   ➡️  Emitting text (no marker): '{text_buffer[:50]}...'")
+                            event = {"type": "token", "data": text_buffer}
+                            yield f"data: {json.dumps(event)}\n\n"
+                            text_buffer = ""
+                            text_flushed = True
             
             # Flush remaining text buffer
             if text_buffer:

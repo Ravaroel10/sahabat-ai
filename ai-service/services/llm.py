@@ -39,12 +39,15 @@ class LLMService:
         self._setup_api_keys()
 
     def _setup_api_keys(self):
-        """Setup API keys in environment for LiteLLM auto-detection."""
-        # For OpenRouter models, always use OPENROUTER_API_KEY
+        """Setup API keys in environment for LiteLLM auto-detection.
+        
+        This method sets up API keys for the primary model and all fallback models.
+        LiteLLM will automatically detect these environment variables.
+        """
+        # Set up primary model API key
         if self._model.startswith("openrouter/"):
             if self._api_key:
                 os.environ["OPENROUTER_API_KEY"] = self._api_key
-        # For other providers, set appropriate env var
         elif self._model.startswith("gemini/"):
             if self._api_key:
                 os.environ["GEMINI_API_KEY"] = self._api_key
@@ -54,6 +57,19 @@ class LLMService:
         elif self._model.startswith("anthropic/"):
             if self._api_key:
                 os.environ["ANTHROPIC_API_KEY"] = self._api_key
+        
+        # Also set up API keys for fallback models from environment
+        # This allows mixing different providers in the fallback chain
+        from app.config import get_settings
+        settings = get_settings()
+        
+        # OpenRouter fallback support
+        if settings.OPENROUTER_API_KEY and not os.environ.get("OPENROUTER_API_KEY"):
+            os.environ["OPENROUTER_API_KEY"] = settings.OPENROUTER_API_KEY
+        
+        # Gemini fallback support
+        if hasattr(settings, 'GEMINI_API_KEY') and settings.GEMINI_API_KEY and not os.environ.get("GEMINI_API_KEY"):
+            os.environ["GEMINI_API_KEY"] = settings.GEMINI_API_KEY
 
     def generate_stream(
         self,
