@@ -160,7 +160,24 @@ async def chat(request: ChatRequest):
         )
 
     def sse_stream() -> Iterator[str]:
-        """Generate SSE events from the orchestrator's token stream."""
+        """Generate SSE events from the orchestrator's token stream.
+
+        Tracks whether any prose token has already been flushed to the
+        client (`text_flushed`). Once true, the JSON-preamble detector is
+        permanently disabled because we're past the start of the response
+        and prose has already been delivered — so any further JSON would
+        be the LLM transitioning into something else (markers, summary,
+        etc.) and stripping it would corrupt the user-facing message.
+
+        This replaces the prior brittle `token_count <= N` guards, which
+        would permanently disable JSON detection the moment the LLM
+        emitted a few preamble tokens (e.g. a chatty "Baik, ..." intro
+        before the JSON block). With those guards active, the regex
+        never engaged and the entire JSON block leaked through to the
+        frontend. Defense-in-depth still applies: if a malformed JSON
+        preamble slips past this filter, the frontend's
+        `cleanupStreamedText` is the second-line safety net.
+        """
         accumulated = []
         token_count = 0
         stream_start = time.time()
@@ -169,6 +186,7 @@ async def chat(request: ChatRequest):
         json_buffer = ""
         brace_count = 0
         text_buffer = ""  # Buffer for detecting inline program markers
+        text_flushed = False  # True once any prose has been yielded to the client
         
         try:
             logger.info("📡 Starting SSE stream...")
@@ -184,58 +202,66 @@ async def chat(request: ChatRequest):
                 
                 # Detect JSON block start (either ```json or plain json {)
                 if not in_json_block:
-                    # Check for JSON block with various formats
-                    token_lower = token.lower().strip()
-                    
-                    # Detect start of markdown JSON block (```json)
-                    if "```json" in token_lower or token.strip() == "```":
-                        in_json_block = True
-                        json_buffer = token
-                        brace_count = 0
-                        logger.info("   🔒 Detected markdown JSON block start, filtering from stream...")
-                        continue
-                    # Handle "json {" in single token (common LLM output)
-                    elif "json" in token_lower and "{" in token and token_count <= 5:
-                        in_json_block = True
-                        json_buffer = token
-                        brace_count = token.count("{") - token.count("}")
-                        logger.info("   🔒 Detected 'json {' pattern, filtering from stream...")
-                        continue
-                    # Handle multi-line token with "json\n{\n..." pattern
-                    elif "json\n{" in token.lower() and token_count <= 5:
-                        in_json_block = True
-                        json_buffer = token
-                        brace_count = token.count("{") - token.count("}")
-                        logger.info("   🔒 Detected 'json\\n{' multi-line pattern, filtering from stream...")
-                        continue
-                    # Filter standalone "json" word at very start of response
-                    elif token_lower == "json" and token_count <= 3:
-                        # LLM is outputting "json" followed by {
-                        in_json_block = True
-                        json_buffer = token
-                        brace_count = 0
-                        logger.info("   🔒 Detected 'json' keyword at start, filtering from stream...")
-                        continue
-                    # Filter "json" variations
-                    elif token_lower in ["json\n", "\njson", "\njson\n", "json ", " json"] and token_count <= 5:
-                        in_json_block = True
-                        json_buffer = json_buffer + token if json_buffer else token
-                        logger.info("   🔒 Filtering 'json' keyword variation...")
-                        continue
-                    # Detect { after "json" was filtered (part of json { pattern)
-                    elif token.strip().startswith("{") and len(json_buffer) > 0 and token_count <= 6:
-                        # This is the { right after "json" was filtered
-                        json_buffer += token
-                        brace_count = token.count("{") - token.count("}")
-                        logger.info("   🔒 Detected { after 'json', continuing filter...")
-                        continue
-                    # Detect plain { at start (fallback for plain JSON)
-                    elif token.strip() == "{" and not text_buffer and token_count <= 3:
-                        in_json_block = True
-                        json_buffer = token
-                        brace_count = 1
-                        logger.info("   🔒 Detected plain { at start, filtering from stream...")
-                        continue
+                    # Only attempt JSON detection BEFORE any prose has
+                    # been flushed to the client. Once text_flushed is
+                    # true, we're past the preamble region of the
+                    # response and any further ` { ... } ` is intentional
+                    # prose that must NOT be stripped.
+                    if not text_flushed:
+                        # Check for JSON block with various formats
+                        token_lower = token.lower().strip()
+                        
+                        # Detect start of markdown JSON block (```json)
+                        if "```json" in token_lower or token.strip() == "```":
+                            in_json_block = True
+                            json_buffer = token
+                            brace_count = 0
+                            logger.info("   🔒 Detected markdown JSON block start, filtering from stream...")
+                            continue
+                        # Handle "json {" in single token (common LLM output)
+                        elif "json" in token_lower and "{" in token:
+                            in_json_block = True
+                            json_buffer = token
+                            brace_count = token.count("{") - token.count("}")
+                            logger.info("   🔒 Detected 'json {' pattern, filtering from stream...")
+                            continue
+                        # Handle multi-line token with "json\n{\n..." pattern
+                        elif "json\n{" in token.lower():
+                            in_json_block = True
+                            json_buffer = token
+                            brace_count = token.count("{") - token.count("}")
+                            logger.info("   🔒 Detected 'json\\n{' multi-line pattern, filtering from stream...")
+                            continue
+                        # Filter standalone "json" word at the very start of response
+                        elif token_lower == "json":
+                            # LLM is outputting "json" followed by {
+                            in_json_block = True
+                            json_buffer = token
+                            brace_count = 0
+                            logger.info("   🔒 Detected 'json' keyword at start, filtering from stream...")
+                            continue
+                        # Filter "json" variations / whitespace-only "json" tokens
+                        elif token_lower in ["json\n", "\njson", "\njson\n", "json ", " json"]:
+                            in_json_block = True
+                            json_buffer = json_buffer + token if json_buffer else token
+                            logger.info("   🔒 Filtering 'json' keyword variation...")
+                            continue
+                        # Detect { after "json" was filtered (part of json { pattern)
+                        elif token.strip().startswith("{") and len(json_buffer) > 0:
+                            # This is the { right after "json" was filtered
+                            json_buffer += token
+                            brace_count = token.count("{") - token.count("}")
+                            logger.info("   🔒 Detected { after 'json', continuing filter...")
+                            continue
+                        # Detect plain { at start (fallback for plain JSON, also schema-drift fallback
+                        # for cases where the LLM starts with `{ "primary_intent": ... }` without the
+                        # usual `json` keyword preamble)
+                        elif token.strip() == "{" and not text_buffer:
+                            in_json_block = True
+                            json_buffer = token
+                            brace_count = 1
+                            logger.info("   🔒 Detected plain { at start, filtering from stream...")
+                            continue
                 
                 # If in JSON block, buffer and check for end
                 if in_json_block:
@@ -246,6 +272,15 @@ async def chat(request: ChatRequest):
                     if "```" in token and len(json_buffer) > 10:  # Closing ``` after some content
                         in_json_block = False
                         logger.info(f"   ✅ Filtered complete JSON block ({len(json_buffer)} chars)")
+                        # Extract text after the closing ``` fence so prose that
+                        # shares a chunk with the closing marker is not lost.
+                        # Nemotron and other large models commonly emit the
+                        # JSON preamble + first prose tokens in the same chunk.
+                        idx = token.rfind("```")
+                        after = token[idx + 3:] if idx >= 0 else ""
+                        if after.strip():
+                            text_buffer = after
+                            logger.info(f"   📝 Carried forward text after fence: {after[:50]}...")
                         json_buffer = ""
                         brace_count = 0
                         continue
@@ -253,6 +288,14 @@ async def chat(request: ChatRequest):
                         # Plain JSON object closed
                         in_json_block = False
                         logger.info(f"   ✅ Filtered complete JSON block ({len(json_buffer)} chars)")
+                        # Extract text after the closing } so prose that shares
+                        # a chunk with the brace is not lost.
+                        idx = token.rfind("}")
+                        if idx >= 0:
+                            after = token[idx + 1:]
+                            if after.strip():
+                                text_buffer = after
+                                logger.info(f"   📝 Carried forward text after brace: {after[:50]}...")
                         json_buffer = ""
                         brace_count = 0
                         continue
@@ -283,6 +326,7 @@ async def chat(request: ChatRequest):
                     if before_marker:
                         event = {"type": "token", "data": before_marker}
                         yield f"data: {json.dumps(event)}\n\n"
+                        text_flushed = True
                     
                     # Find program data from the programs list
                     program_data = None
@@ -322,6 +366,7 @@ async def chat(request: ChatRequest):
                     if before_marker:
                         event = {"type": "token", "data": before_marker}
                         yield f"data: {json.dumps(event)}\n\n"
+                        text_flushed = True
                     
                     # Emit inline action button event
                     logger.info(f"   💡 Detected inline action marker: {action_type}")
@@ -343,11 +388,13 @@ async def chat(request: ChatRequest):
                         text_buffer = text_buffer[-20:]
                         event = {"type": "token", "data": to_flush}
                         yield f"data: {json.dumps(event)}\n\n"
+                        text_flushed = True
             
             # Flush remaining text buffer
             if text_buffer:
                 event = {"type": "token", "data": text_buffer}
                 yield f"data: {json.dumps(event)}\n\n"
+                text_flushed = True
 
             stream_time = time.time() - stream_start
             logger.info(f"   ✅ Finished streaming {token_count} tokens in {stream_time:.3f}s")
