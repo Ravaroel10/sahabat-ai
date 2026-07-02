@@ -270,6 +270,15 @@ export function removeEnglishMixing(text: string): string {
 
 /**
  * Convert formal bureaucratic language to conversational tone.
+ *
+ * Important: only horizontal whitespace runs (spaces/tabs) are collapsed.
+ * Newlines are preserved so the output retains its markdown structure
+ * (tables, headers, ordered/unordered lists, code fences). The original
+ * Python implementation used `re.sub(r"\s+", " ")` which collapsed newlines
+ * too — the same bug here would have been visible all along, but Bug 1
+ * meant the Python-side transform result was never delivered to the
+ * frontend. Now that the transform runs at render time, the whitespace
+ * collapse destroys markdown. The fix is to skip newlines.
  */
 export function convertToConversational(text: string): string {
   if (!text || !text.trim()) return text
@@ -277,7 +286,10 @@ export function convertToConversational(text: string): string {
   for (const [pattern, replacement] of FORMAL_TO_CONVERSATIONAL) {
     result = result.replace(pattern, replacement)
   }
-  return result.replace(/\s+/g, ' ').trim()
+  // [^\S\n]+ matches runs of horizontal whitespace (spaces, tabs) but
+  // explicitly excludes \n. Compare to the buggy /\s+/g which would also
+  // collapse \n, breaking markdown tables/lists/headers.
+  return result.replace(/[^\S\n]+/g, ' ').trim()
 }
 
 /**
@@ -313,7 +325,10 @@ export function removeAiPatterns(text: string): string {
   for (const [pattern, replacement] of AI_PATTERNS) {
     result = result.replace(pattern, replacement)
   }
-  result = result.replace(/\s+/g, ' ').trim()
+  // [^\S\n]+ matches runs of horizontal whitespace but explicitly excludes
+  // \n. Preserves markdown structure (tables, headers, lists, code fences).
+  // See convertToConversational for the rationale.
+  result = result.replace(/[^\S\n]+/g, ' ').trim()
   if (result.length > 0) {
     result = result.charAt(0).toUpperCase() + result.slice(1)
   }

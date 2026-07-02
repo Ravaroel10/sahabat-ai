@@ -214,6 +214,65 @@ describe('convertToConversational', () => {
   it('collapses multiple whitespace after removal', () => {
     expect(convertToConversational('Harap   perhatikan   itu')).toBe('perhatikan itu')
   })
+
+  it('preserves newlines (does not collapse \\n into a space) — markdown regression', () => {
+    // Regression: convertToConversational previously used /\s+/g which
+    // collapsed ALL whitespace including \n, destroying markdown structure
+    // (tables, headers, lists). The fix uses [^\S\n]+ which preserves
+    // newlines while still collapsing horizontal whitespace runs.
+    const input = 'Bapak/Ibu dapat\nbantuan untuk\nkeluarga'
+    expect(convertToConversational(input)).toBe(
+      'kamu dapat\nbantuan untuk\nkeluarga',
+    )
+  })
+
+  it('preserves markdown table structure (regression)', () => {
+    // The user-facing bug: LLM emitted a markdown table, cleanup mangled
+    // newlines, and the rendered UI showed raw `| col | col |` text.
+    // This test locks in the fix: newlines between rows are preserved.
+    //
+    // Note: the cleanup also collapses horizontal whitespace runs (e.g.,
+    // table cell padding `| PKH     |` -> `| PKH |`). This is acceptable
+    // because markdown renderers (react-markdown + remark-gfm) parse
+    // tables by pipe/dash structure, not by visual alignment.
+    const input = [
+      '| Program | Aturan |',
+      '|---------|--------|',
+      '| PKH     | Per X  |',
+      '| BPNT    | Per Y  |',
+    ].join('\n')
+    const result = convertToConversational(input)
+    // Critical: newlines are preserved.
+    expect(result.split('\n')).toHaveLength(4)
+    // Critical: the table structure (pipes, dashes, content) is intact.
+    expect(result).toContain('| Program | Aturan |')
+    expect(result).toContain('|---------|--------|')
+    expect(result).toMatch(/\| PKH .*Per X .*\|/)
+    expect(result).toMatch(/\| BPNT .*Per Y .*\|/)
+    // And the collapsed-newline bug is gone.
+    expect(result).not.toMatch(/Aturan \|-/)
+  })
+
+  it('preserves markdown headers + paragraphs (regression)', () => {
+    const input = '### Header\n\nParagraph satu.\n\n- Item A\n- Item B'
+    expect(convertToConversational(input)).toBe(input)
+  })
+
+  it('still collapses horizontal whitespace runs while preserving newlines', () => {
+    // Locks in the "horizontal only" behavior: multiple spaces on a
+    // single line collapse, but \n between lines is preserved.
+    expect(convertToConversational('Bapak/Ibu   lihat   ini')).toBe(
+      'kamu lihat ini',
+    )
+    // The leading space after \n is internal whitespace — trim() only
+    // touches string start/end, not internal whitespace. So 'kamu lihat
+    // \n   ini  ' becomes 'kamu lihat\n ini' (note: leading ' ini', not
+    // 'ini'). This is the correct "collapse runs to one space, preserve
+    // newlines" behavior.
+    expect(
+      convertToConversational('Bapak/Ibu   lihat\n   ini  '),
+    ).toBe('kamu lihat\n ini')
+  })
 })
 
 describe('removeAiPatterns', () => {
@@ -248,6 +307,29 @@ describe('removeAiPatterns', () => {
   it('returns empty input unchanged', () => {
     expect(removeAiPatterns('')).toBe('')
     expect(removeAiPatterns('   ')).toBe('   ')
+  })
+
+  it('preserves newlines (does not collapse \\n into a space) — markdown regression', () => {
+    // Regression: same bug as convertToConversational. Lock in that
+    // removeAiPatterns no longer flattens multi-line content.
+    const input = 'Selanjutnya,\nlangkah berikutnya\nadalah verifikasi'
+    expect(removeAiPatterns(input)).toBe('Langkah berikutnya\nadalah verifikasi')
+  })
+
+  it('preserves markdown table structure (regression)', () => {
+    // Same caveat as the convertToConversational table test: cell padding
+    // is collapsed but the table structure (pipes, dashes, newlines) is
+    // preserved, which is all react-markdown needs to render correctly.
+    const input = [
+      '| Program | Aturan |',
+      '|---------|--------|',
+      '| PKH     | Per X  |',
+    ].join('\n')
+    const result = removeAiPatterns(input)
+    expect(result.split('\n')).toHaveLength(3)
+    expect(result).toContain('| Program | Aturan |')
+    expect(result).toContain('|---------|--------|')
+    expect(result).toMatch(/\| PKH .*Per X .*\|/)
   })
 })
 
@@ -312,5 +394,55 @@ describe('cleanupStreamedText', () => {
     // Transform pipeline collapses the marker removal's double-space.
     const input = 'Klik tombol [ACTION:auto-birokrasi] untuk lanjut'
     expect(cleanupStreamedText(input)).toBe('Klik tombol untuk lanjut')
+  })
+
+  it('preserves markdown table through the full cleanup pipeline (regression)', () => {
+    // The actual user-facing bug: LLM emitted a markdown table in its
+    // response, the proxy streamed it as text-delta, cleanup mangled
+    // newlines, and the rendered UI showed raw `| col | col |` text.
+    // This test reproduces the input the user reported and confirms the
+    // table now survives the full pipeline.
+    //
+    // Same caveat as the unit tests: cell padding is collapsed but the
+    // table structure (pipes, dashes, newlines, cell content) is intact.
+    const input = [
+      '### 📋 Dasar Hukum & Kriteria',
+      '',
+      '| Program | Aturan |',
+      '|---------|--------|',
+      '| PKH     | Per X  |',
+      '| BPNT    | Per Y  |',
+    ].join('\n')
+    const result = cleanupStreamedText(input)
+    // Critical: newlines are preserved (6 lines: header, blank, table).
+    expect(result.split('\n')).toHaveLength(6)
+    // Critical: header + table structure is intact.
+    expect(result).toContain('### 📋 Dasar Hukum & Kriteria')
+    expect(result).toContain('| Program | Aturan |')
+    expect(result).toContain('|---------|--------|')
+    expect(result).toMatch(/\| PKH .*Per X .*\|/)
+    expect(result).toMatch(/\| BPNT .*Per Y .*\|/)
+    // And the collapsed-newline bug is gone.
+    expect(result).not.toMatch(/Aturan \|-/)
+  })
+
+  it('preserves headers + ordered/unordered lists through the full pipeline', () => {
+    const input = [
+      '### Header',
+      '',
+      'Paragraph satu.',
+      '',
+      '1. Langkah satu',
+      '2. Langkah dua',
+      '',
+      '- Bullet A',
+      '- Bullet B',
+    ].join('\n')
+    const result = cleanupStreamedText(input)
+    expect(result).toContain('### Header')
+    expect(result).toContain('1. Langkah satu')
+    expect(result).toContain('2. Langkah dua')
+    expect(result).toContain('- Bullet A')
+    expect(result).toContain('- Bullet B')
   })
 })
