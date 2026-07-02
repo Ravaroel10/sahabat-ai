@@ -8,7 +8,7 @@
  * Shows eligibility indicators based on user criteria
  */
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -34,6 +34,80 @@ import { useUserContext, type UserCriteria } from '@/contexts/user-context';
 import { trackJourney } from '@/lib/analytics';
 import { parseFilterParams } from '@/lib/filter-url';
 import { Suspense } from 'react';
+
+/**
+ * ProgramWithEligibility — a social program paired with its computed
+ * eligibility result and optional AI reasoning metadata.
+ */
+type ProgramWithEligibility = {
+  program: any;
+  eligibility: any;
+  fromAI?: boolean;
+  aiReasoning?: any;
+  finalScore?: number;
+  recommendation?: any;
+};
+
+/**
+ * ProgramGroup — renders a labelled, color-coded section of program cards.
+ * Extracted from the three repeated eligible/partial/ineligible blocks
+ * that previously duplicated the same JSX structure with only color,
+ * icon, and label differences.
+ */
+function ProgramGroup({
+  icon,
+  badgeClassName,
+  labelClassName,
+  label,
+  programs,
+  onViewDetails,
+  onApply,
+  onBookmark,
+  bookmarkedPrograms,
+  hasActiveFilter,
+}: {
+  icon: ReactNode;
+  badgeClassName: string;
+  labelClassName: string;
+  label: string;
+  programs: ProgramWithEligibility[];
+  onViewDetails: (programId: string) => void;
+  onApply: (programId: string) => void;
+  onBookmark: (programId: string) => void;
+  bookmarkedPrograms: Set<string>;
+  hasActiveFilter: boolean;
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${badgeClassName}`}>
+          {icon}
+          <span className={`text-sm font-semibold ${labelClassName}`}>
+            {label}
+          </span>
+        </div>
+        <span className="text-sm text-muted-foreground">
+          {programs.length} program
+        </span>
+      </div>
+      <div className="grid md:grid-cols-2 gap-4">
+        {programs.map(({ program, eligibility, aiReasoning }) => (
+          <ProgramCard
+            key={program.id}
+            program={program}
+            eligibility={eligibility}
+            aiReasoning={aiReasoning}
+            onViewDetails={onViewDetails}
+            onApply={onApply}
+            onBookmark={onBookmark}
+            isBookmarked={bookmarkedPrograms.has(program.id)}
+            hasActiveFilter={hasActiveFilter}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /**
  * SkeletonCard - Pulse placeholder used while data hydrates or when filtering
@@ -126,16 +200,6 @@ function MarketplacePageContent() {
     
     const queryString = params.toString();
     router.push(`/programs${queryString ? `?${queryString}` : ''}`, { scroll: false });
-  };
-
-  // Type for program with eligibility
-  type ProgramWithEligibility = {
-    program: any;
-    eligibility: any;
-    fromAI?: boolean;
-    aiReasoning?: any;
-    finalScore?: number;
-    recommendation?: any;
   };
 
   // Calculate eligibility for all programs
@@ -518,98 +582,50 @@ function MarketplacePageContent() {
 
                   {/* Eligible Programs */}
                   {groupedPrograms.eligible.length > 0 && (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30">
-                          <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                          <span className="text-sm font-semibold text-green-700 dark:text-green-300">
-                            Cocok Untuk Anda
-                          </span>
-                        </div>
-                        <span className="text-sm text-muted-foreground">
-                          {groupedPrograms.eligible.length} program
-                        </span>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        {groupedPrograms.eligible.map(({ program, eligibility, aiReasoning }) => (
-                          <ProgramCard
-                            key={program.id}
-                            program={program}
-                            eligibility={eligibility}
-                            aiReasoning={aiReasoning}
-                            onViewDetails={handleViewDetails}
-                            onApply={handleApply}
-                            onBookmark={handleBookmark}
-                            isBookmarked={bookmarkedPrograms.has(program.id)}
-                            hasActiveFilter={hasActiveFilter}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                    <ProgramGroup
+                      icon={<Check className="h-4 w-4 text-green-600 dark:text-green-400" />}
+                      badgeClassName="bg-green-100 dark:bg-green-900/30"
+                      labelClassName="text-green-700 dark:text-green-300"
+                      label="Cocok Untuk Anda"
+                      programs={groupedPrograms.eligible}
+                      onViewDetails={handleViewDetails}
+                      onApply={handleApply}
+                      onBookmark={handleBookmark}
+                      bookmarkedPrograms={bookmarkedPrograms}
+                      hasActiveFilter={hasActiveFilter}
+                    />
                   )}
 
                   {/* Partial/Need Clarification Programs */}
                   {groupedPrograms.partial.length > 0 && (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/30">
-                          <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                          <span className="text-sm font-semibold text-amber-700 dark:text-amber-300">
-                            Perlu Informasi Lebih Lanjut
-                          </span>
-                        </div>
-                        <span className="text-sm text-muted-foreground">
-                          {groupedPrograms.partial.length} program
-                        </span>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        {groupedPrograms.partial.map(({ program, eligibility, aiReasoning }) => (
-                          <ProgramCard
-                            key={program.id}
-                            program={program}
-                            eligibility={eligibility}
-                            aiReasoning={aiReasoning}
-                            onViewDetails={handleViewDetails}
-                            onApply={handleApply}
-                            onBookmark={handleBookmark}
-                            isBookmarked={bookmarkedPrograms.has(program.id)}
-                            hasActiveFilter={hasActiveFilter}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                    <ProgramGroup
+                      icon={<Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400" />}
+                      badgeClassName="bg-amber-100 dark:bg-amber-900/30"
+                      labelClassName="text-amber-700 dark:text-amber-300"
+                      label="Perlu Informasi Lebih Lanjut"
+                      programs={groupedPrograms.partial}
+                      onViewDetails={handleViewDetails}
+                      onApply={handleApply}
+                      onBookmark={handleBookmark}
+                      bookmarkedPrograms={bookmarkedPrograms}
+                      hasActiveFilter={hasActiveFilter}
+                    />
                   )}
 
                   {/* Ineligible Programs */}
                   {groupedPrograms.ineligible.length > 0 && (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800">
-                          <X className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                          <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                            Tidak Memenuhi Syarat
-                          </span>
-                        </div>
-                        <span className="text-sm text-muted-foreground">
-                          {groupedPrograms.ineligible.length} program
-                        </span>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        {groupedPrograms.ineligible.map(({ program, eligibility, aiReasoning }) => (
-                          <ProgramCard
-                            key={program.id}
-                            program={program}
-                            eligibility={eligibility}
-                            aiReasoning={aiReasoning}
-                            onViewDetails={handleViewDetails}
-                            onApply={handleApply}
-                            onBookmark={handleBookmark}
-                            isBookmarked={bookmarkedPrograms.has(program.id)}
-                            hasActiveFilter={hasActiveFilter}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                    <ProgramGroup
+                      icon={<X className="h-4 w-4 text-gray-600 dark:text-gray-400" />}
+                      badgeClassName="bg-gray-100 dark:bg-gray-800"
+                      labelClassName="text-gray-700 dark:text-gray-300"
+                      label="Tidak Memenuhi Syarat"
+                      programs={groupedPrograms.ineligible}
+                      onViewDetails={handleViewDetails}
+                      onApply={handleApply}
+                      onBookmark={handleBookmark}
+                      bookmarkedPrograms={bookmarkedPrograms}
+                      hasActiveFilter={hasActiveFilter}
+                    />
                   )}
                 </div>
               ) : (
