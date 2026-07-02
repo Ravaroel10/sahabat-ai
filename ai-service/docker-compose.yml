@@ -4,7 +4,13 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - chroma-data:/data
+      # Bind-mount the host's ./data/chroma into the container so local
+      # `py -m ingest.ingest` and the Docker-deployed service share the
+      # SAME ChromaDB instance. Previously this used a named volume
+      # (`chroma-data:/data`) which silently diverged: ingest wrote to
+      # the host filesystem while the app read from the Docker volume,
+      # and the LLM saw zero RAG hits even after a "successful" ingest.
+      - ./data/chroma:/data/chroma
       - ../src/data:/app/src/data:ro
     env_file:
       - .env
@@ -18,5 +24,10 @@ services:
       timeout: 10s
       retries: 3
 
-volumes:
-  chroma-data:
+# Note: the named `chroma-data` volume was removed. If you previously
+# ingested data into the named volume (e.g., in a prior deployment),
+# that data is still on disk under the Docker volume name but is no
+# longer accessible to the app. To migrate it: stop the stack, run
+# `docker volume inspect chroma-data` to find the mountpoint, copy the
+# contents to ai-service/data/chroma/ on the host, then bring the
+# stack back up.
