@@ -704,18 +704,4 @@ export function AduanDocument({ data }: PDFDocumentProps) {
 // Export type for template selection
 export type PDFTemplateType = 'sktm' | 'permohonan' | 'aduan' | 'pengantar';
 
-// Helper to get the appropriate template component
-export function getPDFTemplate(templateType: PDFTemplateType) {
-  switch (templateType) {
-    case 'sktm':
-      return SKTMDocument;
-    case 'permohonan':
-      return PermohonanDocument;
-    case 'aduan':
-      return AduanDocument;
-    case 'pengantar':
-      return PengantarDocument;
-    default:
-      return SKTMDocument;
-  }
-}
+

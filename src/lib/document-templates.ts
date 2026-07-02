@@ -22,7 +22,4 @@ export function getAllDocumentTemplates(): DocumentTemplate[] {
   return documentTemplates.templates as DocumentTemplate[];
 }
 
-export function getDocumentTemplate(templateId: string): DocumentTemplate | null {
-  const templates = documentTemplates.templates as DocumentTemplate[];
-  return templates.find((t) => t.id === templateId) || null;
-}
+

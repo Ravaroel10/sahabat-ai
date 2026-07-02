@@ -24,7 +24,7 @@ import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress
 import { cn } from "@/lib/utils"
 import { validatePdf, type PdfProcessingError } from "@/lib/pdf-processing/field-extractor"
 
-export interface PdfFormField {
+interface PdfFormField {
   name: string
   type: 'text' | 'checkbox' | 'radio' | 'dropdown' | 'signature'
   value?: string

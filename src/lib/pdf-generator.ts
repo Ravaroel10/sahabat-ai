@@ -21,7 +21,7 @@ export interface PDFGenerationData {
 /**
  * Generate PDF blob from template data
  */
-export async function generatePDFBlob(data: PDFGenerationData): Promise<Blob> {
+async function generatePDFBlob(data: PDFGenerationData): Promise<Blob> {
   let PDFComponent: React.ComponentType<{ data: PDFGenerationData }>;
   
   switch (data.templateType) {

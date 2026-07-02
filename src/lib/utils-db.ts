@@ -8,9 +8,3 @@ export function generateId(): string {
   return createId();
 }
 
-/**
- * Generate multiple unique IDs at once
- */
-export function generateIds(count: number): string[] {
-  return Array.from({ length: count }, () => createId());
-}
