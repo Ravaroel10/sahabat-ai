@@ -45,7 +45,7 @@ export default function HomePage() {
         </h1>
 
         <p className="text-[#191816]/70 text-sm sm:text-base leading-relaxed max-w-2xl mt-6">
-          Chat AI dengan sitasi peraturan (Permensos, Perpres, UU), direktori 14+ program bantuan sosial dengan filter kelayakan otomatis, dan generator draf dokumen administrasi sipil. Dirancang untu[...]
+          Chat AI bersitasi otomatis dari knowledge base regulasi nasional, direktori program bantuan lintas kementerian dengan filter kelayakan otomatis, dan generator draf dokumen administrasi sipil siap cetak. Dirancang untuk transparansi dan kemandirian warga.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-8 w-full sm:w-auto">
@@ -71,7 +71,7 @@ export default function HomePage() {
                   <div className="w-3 h-3 rounded-full bg-[#191816]/10" />
                   <div className="w-3 h-3 rounded-full bg-[#eae4dc]" />
                 </div>
-                <span className="text-[11px] font-mono text-[#191816]/50 ml-3">bantu-arah.app — Chat · Marketplace · Auto-Birokrasi</span>
+                <span className="text-[11px] font-mono text-[#191816]/50 ml-3">SAHABAT AI — Chat · Marketplace · Auto-Birokrasi</span>
               </div>
               <div className="flex items-center gap-1.5 bg-[#e05e3f]/10 text-[#e05e3f] px-2.5 py-0.5 rounded-full text-[10px] font-bold">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#e05e3f] animate-pulse" />
@@ -85,7 +85,7 @@ export default function HomePage() {
                   <span className="text-[10px] font-mono font-bold text-[#e05e3f] uppercase tracking-widest">3 Fitur Utama</span>
                   <h3 className="font-bold text-xl text-[#191816] leading-snug">Chat, Direktori Program, dan Generator Dokumen</h3>
                   <p className="text-xs text-[#191816]/70 leading-relaxed">
-                    SAHABAT AI mengombinasikan AI percakapan dengan knowledge base regulasi, filter kelayakan otomatis, dan generator draf PDF untuk membantu warga mengurus hak sosialnya secara mandir[...]
+                    SAHABAT AI mengombinasikan AI percakapan dengan knowledge base regulasi, filter kelayakan otomatis, dan generator draf PDF untuk membantu warga mengurus hak sosialnya secara mandiri.
                   </p>
                 </div>
 
@@ -105,13 +105,13 @@ export default function HomePage() {
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
                     <MessageCircle size={22} className="text-[#e05e3f] mb-3" />
                     <h5 className="font-bold text-xs text-[#191816] mb-1">1. Chat AI + RAG</h5>
-                    <p className="text-[11px] text-[#191816]/60 leading-normal">Chat streaming dengan sitasi otomatis dari Permensos, Perpres, dan UU. Respons dalam bahasa percakapan, darurat terdetek[...]
+                    <p className="text-[11px] text-[#191816]/60 leading-normal">Chat streaming dengan sitasi otomatis dari Permensos, Perpres, dan UU. Respons dalam bahasa percakapan, darurat terdeteksi otomatis.</p>
                   </div>
 
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
                     <Store size={22} className="text-[#e05e3f] mb-3" />
                     <h5 className="font-bold text-xs text-[#191816] mb-1">2. Marketplace Program</h5>
-                    <p className="text-[11px] text-[#191816]/60 leading-normal">14+ program bantuan (PKH, BPNT, KIP, BPJS PBI, dll) dengan filter kelayakan otomatis. URL filter dapat dishare.</p>
+                    <p className="text-[11px] text-[#191816]/60 leading-normal">Direktori program bantuan dari berbagai kementerian (PKH, BPNT, KIP, BPJS, dll) dengan filter kelayakan otomatis berdasarkan profil Anda. URL filter dapat dishare.</p>
                   </div>
 
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
@@ -124,7 +124,7 @@ export default function HomePage() {
                 <div className="p-4 bg-[#e05e3f]/5 rounded-2xl border border-[#e05e3f]/10 flex items-center gap-3">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#e05e3f] shrink-0" />
                   <p className="text-[11px] text-[#191816]/75 leading-relaxed">
-                    <strong>Alur terhubung:</strong> hasil rekomendasi chat otomatis mengisi filter marketplace, dan program terpilih membawa konteksnya ke Auto-Birokrasi. Tidak perlu input data dua k[...]
+                    <strong>Alur terhubung:</strong> hasil rekomendasi chat otomatis mengisi filter marketplace, dan program terpilih membawa konteksnya ke Auto-Birokrasi. Tidak perlu input data dua kali.
                   </p>
                 </div>
               </div>
@@ -134,55 +134,23 @@ export default function HomePage() {
 
         {/* Stats Grid — Real counts, not fabricated metrics */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left" id="arsitektur">
-          {/* Card 1: 14+ Program */}
-          <div className="relative bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10 overflow-hidden pr-24 sm:pr-32">
-            <div className="relative z-10">
-              <span className="font-black text-3xl block">14+ Program</span>
-              <span className="text-xs font-semibold text-white/90 mt-1 block">Bantuan Sosial Terdaftar</span>
-              <p className="text-[11px] text-white/70 mt-2 leading-relaxed">PKH, BPNT, KIP, BPJS PBI, ASLUT, ASOD, Rutilahu, BPUM, BLP, JKN, Jamkesda, PIS, Bansos Darurat, BKK — filter kelayakan otoma[...]
-            </p>
-            </div>
-            <Image 
-              src="/maskot3.png" 
-              alt="Maskot" 
-              width={120} 
-              height={120} 
-              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain pointer-events-none z-0 opacity-90"
-            />
+          <div className="bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10">
+            <span className="font-black text-3xl block">Lintas Kementerian</span>
+            <span className="text-xs font-semibold text-white/90 mt-1 block">Cakupan Multi-Lembaga Negara</span>
+            <p className="text-[11px] text-white/70 mt-2 leading-relaxed">Program bantuan dari Kemensos, Kemenkes, Kemendikbudristek, Kemenkop UKM, BPJS Ketenagakerjaan, BNPB, hingga pemerintah daerah — merangkum kategori tunai, pangan, pendidikan, kesehatan, lansia, disabilitas, dan perumahan. Filter kelayakan otomatis menyesuaikan profil Anda.</p>
+            <Image src="/maskot3.png" alt="Maskot" width={120} height={120} className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"/>
           </div>
-
-          {/* Card 2: RAG + Sitasi */}
-          <div className="relative bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15 overflow-hidden pr-24 sm:pr-32">
-            <div className="relative z-10">
-              <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
-              <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
-              <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peratura[...]
-            </p>
-            </div>
-            <Image 
-              src="/maskot2.png" 
-              alt="Maskot" 
-              width={120} 
-              height={120} 
-              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain pointer-events-none z-0 opacity-90"
-            />
+          <div className="bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15">
+            <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
+            <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
+            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peraturan menyertakan rujukan pasal.</p>
+            <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="absolute bottom-0 -right-5 w-20 h-20 sm:w-28 sm:h-28 object-contain"/>
           </div>
-
-          {/* Card 3: 4 Template + Custom */}
-          <div className="relative bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc] overflow-hidden pr-24 sm:pr-32">
-            <div className="relative z-10">
-              <span className="font-black text-3xl block text-[#191816]">4 Template + Custom</span>
-              <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Generator Dokumen PDF</span>
-              <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template bawaan (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom — kolom isian diekstrak otomatis. Output si[[...]
-            </p>
-            </div>
-            <Image 
-              src="/maskot1.png" 
-              alt="Maskot" 
-              width={125} 
-              height={125} 
-              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain pointer-events-none z-0 opacity-90"
-            />
+          <div className="bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc]">
+            <span className="font-black text-3xl block text-[#191816]">Auto-Birokrasi</span>
+            <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Template Lengkap + Custom PDF</span>
+            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template surat administrasi sipil Indonesia (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom dengan auto-fill kolom isian. Output format surat resmi kelurahan, siap cetak.</p>
+            <Image src="/maskot1.png" alt="Maskot" width={125} height={125} className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"/>
           </div>
         </div>
       </section>
@@ -195,7 +163,7 @@ export default function HomePage() {
               Tiga Fitur untuk Setiap Langkah Akses Hak Sosial
             </h2>
             <p className="text-[#191816]/75 text-xs sm:text-sm leading-relaxed">
-              SAHABAT AI menutup celah informasi antara warga prasejahtera dan program pemerintah melalui tiga fitur yang saling terhubung: tanya jawab AI bersitasi, direktori program yang dapat difil[...]
+              SAHABAT AI menutup celah informasi antara warga prasejahtera dan program pemerintah melalui tiga fitur yang saling terhubung: tanya jawab AI bersitasi, direktori program yang dapat difilter, dan generator draf dokumen untuk dibawa ke kelurahan.
             </p>
             <p className="text-[#191816]/70 text-xs sm:text-sm leading-relaxed">
               Semua fitur dapat digunakan tanpa login. Login hanya untuk menyimpan riwayat chat dan draf dokumen antar sesi.
@@ -228,7 +196,7 @@ export default function HomePage() {
                 <h4 className="font-bold text-sm text-[#191816]">Chat AI + RAG (di /chat)</h4>
               </div>
               <p className="text-xs text-[#191816]/65 leading-relaxed">
-                Pesan Anda diambil dari vector database regulasi (ChromaDB) sebelum diteruskan ke LLM. Respons mengalir token-per-token via SSE dengan sitasi peraturan yang dapat diklik. Situasi darur[...]
+                Pesan Anda diambil dari vector database regulasi (ChromaDB) sebelum diteruskan ke LLM. Respons mengalir token-per-token via SSE dengan sitasi peraturan yang dapat diklik. Situasi darurat (kecelakaan, kekerasan, bencana) terdeteksi otomatis dan memprioritaskan hotline.
               </p>
             </div>
 
@@ -240,7 +208,7 @@ export default function HomePage() {
                 <h4 className="font-bold text-sm text-[#191816]">Marketplace + Eligibility (di /programs)</h4>
               </div>
               <p className="text-xs text-[#191816]/65 leading-relaxed">
-                Filter 14+ program berdasarkan penghasilan, jumlah anggota keluarga, lokasi, pekerjaan, usia, dan disabilitas. Kalkulator kelayakan lokal menandai tiap program sebagai <em>cocok</em>, [...]
+                Filter program bantuan multi-kementerian berdasarkan penghasilan, jumlah anggota keluarga, lokasi, pekerjaan, usia, dan disabilitas. Kalkulator kelayakan lokal menandai tiap program sebagai <em>cocok</em>, <em>perlu verifikasi</em>, atau <em>tidak memenuhi</em>. Filter dapat dishare via URL.
               </p>
             </div>
 
@@ -252,7 +220,7 @@ export default function HomePage() {
                 <h4 className="font-bold text-sm text-[#191816]">Auto-Birokrasi (di /documents)</h4>
               </div>
               <p className="text-xs text-[#191816]/65 leading-relaxed">
-                4 template bawaan (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom — kolom isian diekstrak otomatis. Output PDF menggunakan format surat resmi Indonesia, siap dibawa ke ke[...]
+                Template multi-format (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom — kolom isian diekstrak otomatis. Output PDF menggunakan format surat resmi Indonesia, siap dibawa ke kelurahan untuk ditandatangani.
               </p>
             </div>
           </div>
@@ -273,22 +241,22 @@ export default function HomePage() {
             {
               icon: Brain,
               title: "Chat AI Multi-Kemampuan",
-              description: "Empat kapabilitas dalam satu antarmuka: navigasi hak, sitasi bukti (Permensos/Perpres/UU), fact-check klaim, dan eskalasi darurat. Chat history otomatis tersimpan untuk pen[...]
+              description: "Empat kapabilitas dalam satu antarmuka: navigasi hak, sitasi bukti (Permensos/Perpres/UU), fact-check klaim, dan eskalasi darurat. Chat history otomatis tersimpan untuk pengguna login."
             },
             {
               icon: ShieldAlert,
               title: "Deteksi Darurat Otomatis",
-              description: "Pesan dengan kata kunci darurat (kecelakaan, kekerasan, bencana) ditandai otomatis. UI menampilkan hotline 119/110/113 dan program prioritas. Berlaku bahkan saat LLM gagal.[...]
+              description: "Pesan dengan kata kunci darurat (kecelakaan, kekerasan, bencana) ditandai otomatis. UI menampilkan hotline 119/110/113 dan program prioritas. Berlaku bahkan saat LLM gagal."
             },
             {
               icon: Search,
               title: "Smart Eligibility Search",
-              description: "Modal dua-langkah: input kriteria terstruktur, lalu konteks bebas. Backend menghitung skor kelayakan dengan LLM untuk rekomendasi yang kontekstual, bukan hanya berbasis fie[...]
+              description: "Modal dua-langkah: input kriteria terstruktur, lalu konteks bebas. Backend menghitung skor kelayakan dengan LLM untuk rekomendasi yang kontekstual, bukan hanya berbasis field matching."
             },
             {
               icon: Layers,
               title: "Konteks Lintas-Fitur",
-              description: "Program hasil rekomendasi chat otomatis mengisi filter marketplace. Program yang dipilih membawa konteksnya (kriteria user) ke Auto-Birokrasi. Riwayat draf tersimpan per te[...]
+              description: "Program hasil rekomendasi chat otomatis mengisi filter marketplace. Program yang dipilih membawa konteksnya (kriteria user) ke Auto-Birokrasi. Riwayat draf tersimpan per template."
             }
           ].map((item, idx) => {
             const Icon = item.icon;
