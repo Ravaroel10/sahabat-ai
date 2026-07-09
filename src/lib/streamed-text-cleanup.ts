@@ -216,6 +216,41 @@ export function stripIntentJson(text: string): string {
   result = result.replace(/\}\s*\n{2,}/g, '\n\n')
   result = result.replace(/^\}\s*/g, '')
 
+  // Phase 4: streaming-flash suppression.
+  //
+  // When the LLM emits a JSON preamble at the start of its response, that
+  // preamble streams into the renderer token-by-token. Each intermediate
+  // render runs `cleanupStreamedText` on the partial accumulated string,
+  // and Phase 1/2 require a *complete* structure (closing ``` fence or
+  // balanced `}`) to strip the block. Until those structures arrive,
+  // partial fragments like ` ```json\n{ \"intent_cla` would otherwise
+  // flash briefly in the user's UI.
+  //
+  // The defense: after Phase 1/2/3 ran, check whether the result still
+  // *begins* with a recognized JSON intent preamble signature. If so,
+  // the cleanup wasn't able to fully strip it (because it's incomplete),
+  // so we return `''` to suppress the flash. Once the closing characters
+  // arrive on subsequent renders, Phase 1/2 strip the whole block and
+  // the prose renders cleanly. This is invisible to the user beyond a
+  // slightly longer "thinking" gap before the response starts.
+  //
+  // The anchor is intentionally strict:
+  //   - Markdown fence opening (` ```json` or bare ` ``` ` followed by
+  //     a newline) — the LLM's two standard preamble shapes.
+  //   - JSON intent wrapper key (`"intent_classification"`).
+  //   - Schema-drift fallback key (`"primary_intent"`).
+  // We deliberately exclude the bare `json` keyword and a generic `{`
+  // because legitimate prose occasionally leads with those (e.g. an
+  // explanation of what JSON is, or a quoted `{name}` example), and
+  // suppressing that prose would be a worse UX than a brief flash.
+  if (
+    /^\s*(?:```(?:json)?\s*\n?|\{\s*"(?:intent_classification|primary_intent)")/i.test(
+      result,
+    )
+  ) {
+    return ''
+  }
+
   return result
 }
 
@@ -224,16 +259,33 @@ export function stripIntentJson(text: string): string {
  * objects. Walks each `"intent_classification"` occurrence, finds the
  * enclosing `{` and matching `}`, and deletes the whole object while
  * respecting JSON string escaping.
+ *
+ * Passes A/B/C: standard schema — the JSON is wrapped under an
+ * `"intent_classification"` key (matches the prompt-defined schema).
+ *
+ * Passes D/E/F: schema-drift fallback — the LLM dropped the
+ * `"intent_classification"` wrapper and emitted the schema fields directly
+ * keyed off the root object (`{ "primary_intent": ..., "confidence": ...,
+ * "show_program_cards": ... }`). These passes detect the bare root-object
+ * form by its schema-mandatory keys. Because the schema validation in
+ * `ai-service/orchestrator/intent_parser.py` requires `primary_intent`,
+ * `confidence`, `show_program_cards`, `show_action_buttons`, and
+ * `show_next_steps` to all appear together, anchoring the regex on
+ * `"primary_intent"` is enough — legitimate prose almost never leads
+ * with a JSON object containing that exact key.
  */
 function stripBraceBalancedNakedJson(text: string): string {
-  // Conservative three-pass strategy. All replacements use empty string so
-  // the result naturally starts/ends at the boundaries of the next prose.
-  // Pass A: multi-line JSON where the closing `}` sits at the start of a line.
-  //         This is the most common LLM output shape and avoids the lazy-brace bug.
-  //         Trailing `\n?` consumes at most one trailing newline so we don't
-  //         collapse the visual separator between the JSON block and the prose.
-  // Pass B: single-line nested JSON (two levels of `{...}`).
-  // Pass C: single-level fallback.
+  // Conservative strategy. All replacements use empty string so the
+  // result naturally starts/ends at the boundaries of the next prose.
+  // Pass A: multi-line JSON with `intent_classification` wrapper, closing
+  //         `}` at start of line (most common LLM output shape; avoids the
+  //         lazy-brace bug). Trailing `\n?` consumes at most one trailing
+  //         newline so the visual separator to the next prose stays intact.
+  // Pass B: single-line nested JSON with `intent_classification` wrapper.
+  // Pass C: single-level fallback for the wrapped schema.
+  // Pass D: multi-line JSON with bare `primary_intent` (no wrapper).
+  // Pass E: single-line nested JSON with bare `primary_intent`.
+  // Pass F: single-level fallback for the unwrapped schema.
   let result = text
   result = result.replace(
     /\s*\{\s*"intent_classification"\s*:[\s\S]*?\n\}\n?/gi,
@@ -245,6 +297,22 @@ function stripBraceBalancedNakedJson(text: string): string {
   )
   result = result.replace(
     /\s*\{\s*"intent_classification"\s*:[^{}]*\}\n?/gi,
+    '',
+  )
+  // Schema-drift fallback: LLM flattened the schema without the
+  // `intent_classification` wrapper key. Anchor on `primary_intent`
+  // because legitimate prose virtually never leads with a JSON object
+  // containing that exact key.
+  result = result.replace(
+    /\s*\{\s*"primary_intent"\s*:[\s\S]*?\n\}\n?/gi,
+    '',
+  )
+  result = result.replace(
+    /\s*\{\s*"primary_intent"\s*:\s*\{[^{}]*\}\s*\}\n?/gi,
+    '',
+  )
+  result = result.replace(
+    /\s*\{\s*"primary_intent"\s*:[^{}]*\}\n?/gi,
     '',
   )
   return result

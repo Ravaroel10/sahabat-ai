@@ -44,10 +44,13 @@ export function useChatPersistence(messages: UIMessage[], setMessages: (messages
           
           console.log("[useChatPersistence] Setting messages:", data.session.messages);
           setCurrentSessionId(sessionId);
-          setMessages(data.session.messages || []);
+          
+          // Ensure messages is always an array
+          const loadedMessages = data.session.messages || [];
+          setMessages(loadedMessages);
           
           // Verify messages were set
-          console.log("[useChatPersistence] Messages should now be set");
+          console.log("[useChatPersistence] Messages should now be set. Count:", loadedMessages.length);
         } else {
           console.error("[useChatPersistence] API error:", await response.text());
         }
@@ -64,28 +67,32 @@ export function useChatPersistence(messages: UIMessage[], setMessages: (messages
   useEffect(() => {
     const sessionId = searchParams.get("session");
     
-    console.log("[useChatPersistence] URL changed:", {
+    console.log("[useChatPersistence] URL effect triggered:", {
       newSessionId: sessionId,
       previousSessionId: previousSessionIdRef.current,
       currentMessages: messages.length,
       currentSessionId,
+      pathname,
+      isAuthenticated: !!session,
     });
     
     // Session ID changed - load new session or clear
     if (sessionId !== previousSessionIdRef.current) {
-      if (sessionId) {
-        // Load the session
+      if (sessionId && session) {
+        // Load the session only if authenticated
         console.log("[useChatPersistence] Loading session:", sessionId);
         loadSession(sessionId);
-      } else {
+        previousSessionIdRef.current = sessionId;
+      } else if (!sessionId) {
         // No session ID - clear everything for new chat
         console.log("[useChatPersistence] Clearing for new chat");
         setCurrentSessionId(null);
         setMessages([]);
+        previousSessionIdRef.current = null;
       }
-      previousSessionIdRef.current = sessionId;
     }
-  }, [searchParams, loadSession, setMessages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, session]);
 
   // Auto-save messages (only if messages exist)
   useEffect(() => {

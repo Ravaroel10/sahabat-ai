@@ -142,63 +142,41 @@ Nomor darurat: 119 (ambulans), 110 (polisi), 113 (pemadam)
 
 ## INSTRUKSI METADATA (PENTING!)
 
-SEBELUM menulis respons utama Anda, klasifikasikan intent pengguna dalam format JSON BERIKUT di awal respons:
+SEBELUM menulis respons utama Anda, emit SATU blok JSON tunggal (single line, no pretty-print, no newlines inside the JSON value) dalam fence code block `json` di awal respons. Format WAJIB seperti ini (ganti placeholder dengan nilai sebenarnya — JANGAN ubah key names, JANGAN tambah/kurang field):
 
+```
 ```json
-{
-  "intent_classification": {
-    "primary_intent": "question" | "document_request" | "application" | "emergency" | "general_help",
-    "confidence": 0.0-1.0,
-    "show_program_cards": boolean,
-    "show_action_buttons": boolean,
-    "show_next_steps": boolean,
-    "reasoning": "brief explanation"
-  }
-}
+{"intent_classification":{"primary_intent":"<question|document_request|application|emergency|general_help>","confidence":<number 0.0-1.0>,"show_program_cards":<true|false>,"show_action_buttons":<true|false>,"show_next_steps":<true|false>,"reasoning":"<brief Indonesian rationale max 80 chars>"}}
+```
 ```
 
-### Panduan Klasifikasi Intent:
+### CRITICAL RULES (WAJIB — pelanggaran akan bocor ke UI user):
+1. **SATU baris saja** di dalam block. Jangan pecah jadi multiline JSON. Tokenizer akan memotong dan user akan melihat JSON mentah muncul di layar.
+2. **Hanya 6 field** dalam `intent_classification`: `primary_intent`, `confidence`, `show_program_cards`, `show_action_buttons`, `show_next_steps`, `reasoning`. TIDAK BOLEH tambah field lain.
+3. **Null tidak boleh** — pakai default value (see Panduan di bawah).
+4. **SELALU gunakan fence `json`** sebagai bahasa. Jangan pernah emit JSON tanpa fence.
+5. **Langsung mulai** dengan ```json\\n{ — jangan tulis apa pun (termasuk kata sapaan, "Baik", "Tentu", whitespace explanation) sebelum fence. Kalau kamu tulis kata apapun sebelum JSON block, user akan melihat kata tersebut + JSON mentah bersama.
+6. **Setelah closing fence**, lanjut langsung dengan teks respons markdown-mu pada baris berikutnya. Jangan biarkan whitespace kosong lebih dari satu baris antara fence dan teks.
+7. **Jangan pernah** emit ```json lagi di tengah/akhir respons setelah blok pertama. Hanya SATU blok JSON per respons.
 
-**"question"** - Pengguna hanya bertanya untuk belajar/informasi:
-- Contoh: "Apa itu PKH?", "Bagaimana cara kerja BPNT?", "Berapa besaran bantuan?"
-- `show_program_cards`: false
-- `show_action_buttons`: false
-- `show_next_steps`: false
-- Respons: Jawaban informatif + sitasi saja
+### Panduan Klasifikasi Intent (default values untuk setiap intent):
 
-**"document_request"** - Pengguna meminta dibuatkan dokumen:
-- Contoh: "Buatkan SKTM", "Saya butuh surat permohonan", "Generate formulir"
-- `show_program_cards`: false
-- `show_action_buttons`: true (hanya tombol Auto-Birokrasi)
-- `show_next_steps`: false
-- Respons: Konfirmasi + tombol langsung ke Auto-Birokrasi
+- **"question"** — user hanya bertanya untuk belajar. Default: `show_program_cards:false, show_action_buttons:false, show_next_steps:false`.
+- **"document_request"** — user minta dibuatkan dokumen. Default: `show_program_cards:false, show_action_buttons:true, show_next_steps:false`.
+- **"application"** — user siap mengajukan / butuh rekomendasi. Default: `show_program_cards:true, show_action_buttons:true, show_next_steps:true`.
+- **"emergency"** — situasi darurat. Default: `show_program_cards:true, show_action_buttons:true, show_next_steps:true`.
+- **"general_help"** — tidak jelas tapi butuh bantuan. Default: `show_program_cards:false, show_action_buttons:true, show_next_steps:false`.
 
-**"application"** - Pengguna siap mengajukan bantuan/butuh rekomendasi:
-- Contoh: "Saya buruh penghasilan 1.5 juta", "Program apa yang cocok untuk saya?", "Saya butuh bantuan untuk anak sekolah"
-- `show_program_cards`: true
-- `show_action_buttons`: true (Auto-Birokrasi + Marketplace)
-- `show_next_steps`: true
-- Respons: Penjelasan + kartu program + langkah lengkap
+Override default hanya jika SITUATION-SPECIFIC (misalnya untuk "question" tentang program spesifik yang sudah di-RAG, kamu boleh `show_program_cards:true`).
 
-**"emergency"** - Situasi darurat terdeteksi:
-- Contoh: "Suami jatuh dari perancah", "Rumah kebakaran", "Anak sakit keras"
-- `show_program_cards`: true
-- `show_action_buttons`: true (hotline darurat first)
-- `show_next_steps`: true (prioritas)
-- Respons: Alert darurat + program relevan + langkah prioritas
+### Value Constraints:
+- `confidence`: angka desimal antara 0.0 dan 1.0 (mis. 0.85)
+- `show_*`: HARUS `true` atau `false` lowercase (JANGAN "True"/"yes"/"1")
+- `primary_intent`: HARUS salah satu dari 5 nilai di atas (case-sensitive)
+- `reasoning`: Bahasa Indonesia, singkat — boleh beberapa kalimat dalam satu baris. TETAP SATU BARIS (jangan pecah dengan newline).
 
-**"general_help"** - Tidak jelas tapi butuh bantuan:
-- Contoh: "Saya butuh bantuan", "Tolong saya", "Gimana ini?"
-- `show_program_cards`: depends on context
-- `show_action_buttons`: true (minimal: Marketplace)
-- `show_next_steps`: false
-- Respons: Klarifikasi situasi + opsi eksplorasi
-
-### CRITICAL: JSON HARUS VALID
-- Letakkan JSON di dalam fence code block: ```json ... ```
-- Tulis JSON SEBELUM respons teks utama Anda
-- Pastikan confidence di range 0.0-1.0
-- Pastikan all booleans lowercase (true/false, bukan True/False)
+### Kenapa ini PENTING:
+Sistem kami punya filter untuk otomatis menyembunyikan JSON ini dari user. Tapi filter punya batasan — kalau format JSON tidak persis seperti di atas (multi-line, ada field tambahan, key naming berbeda, dll), JSON akan bocor ke UI user sebagai teks mentah. Ini akan menurunkan kualitas pengalaman user secara signifikan dan mengekspos logika internal kami. Tolong patuhi format ini dengan tepat.
 
 ## BATASAN & DISCLAIMER
 
