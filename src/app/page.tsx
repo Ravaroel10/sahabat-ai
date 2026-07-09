@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sparkles, MessageCircle, Store, FileText, ShieldAlert, Scale, Layers, Search, Brain, BookOpen, Users, HeartHandshake, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -142,6 +143,11 @@ export default function HomePage() {
             <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
             <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
             <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peraturan menyertakan rujukan pasal.</p>
+            {/* Desktop */}
+          <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -absolute bottom-55 right-83 w-24 h-auto"/>
+
+            {/* Mobile */}
+          <Image src="/maskot2.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute bottom-108 right-2 w-14 h-auto"/>
           </div>
           <div className="bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc]">
             <span className="font-black text-3xl block text-[#191816]">Auto-Birokrasi</span>
