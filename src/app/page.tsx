@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sparkles, MessageCircle, Store, FileText, ShieldAlert, Scale, Layers, Search, Brain, BookOpen, Users, HeartHandshake, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -195,10 +196,10 @@ export default function HomePage() {
                 Pesan Anda diambil dari vector database regulasi (ChromaDB) sebelum diteruskan ke LLM. Respons mengalir token-per-token via SSE dengan sitasi peraturan yang dapat diklik. Situasi darurat (kecelakaan, kekerasan, bencana) terdeteksi otomatis dan memprioritaskan hotline.
               </p>
                 {/* Desktop */}
-            <Image src="/maskot3.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -absolute bottom-55 right-2 w-24 h-auto"/>
+            <Image src="/maskot3.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -bottom-145 right-60 w-24 h-auto"/>
 
               {/* Mobile */}
-            <Image src="/maskot3.png" alt="Maskot" width={70} height={70}className="block md:hidden absolute bottom-58 right-2 w-14 h-auto"/>
+            <Image src="/maskot3.png" alt="Maskot" width={70} height={70}className="block md:hidden absolute top-565 right-2 w-14 h-auto"/>
             </div>
 
             <div className="p-5 rounded-2xl bg-[#faf6f2] border border-[#e05e3f]/10 text-left">
@@ -212,10 +213,10 @@ export default function HomePage() {
                 Filter program bantuan multi-kementerian berdasarkan penghasilan, jumlah anggota keluarga, lokasi, pekerjaan, usia, dan disabilitas. Kalkulator kelayakan lokal menandai tiap program sebagai <em>cocok</em>, <em>perlu verifikasi</em>, atau <em>tidak memenuhi</em>. Filter dapat dishare via URL.
               </p>
                 {/* Desktop */}
-          <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -absolute bottom-55 right-83 w-24 h-auto"/>
+          <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -bottom-145 right-145 w-24 h-auto"/>
 
             {/* Mobile */}
-          <Image src="/maskot2.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute bottom-108 right-2 w-14 h-auto"/>
+          <Image src="/maskot2.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute top-515 right-2 w-14 h-auto"/>
             </div>
 
             <div className="p-5 rounded-2xl bg-[#faf6f2] border border-[#e05e3f]/10 text-left">
@@ -229,10 +230,10 @@ export default function HomePage() {
                 Template multi-format (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom — kolom isian diekstrak otomatis. Output PDF menggunakan format surat resmi Indonesia, siap dibawa ke kelurahan untuk ditandatangani.
               </p>
                {/* Desktop */}
-          <Image src="/maskot1.png" alt="Maskot" width={125} height={125} className="hidden md:block absolute -absolute bottom-55 right-165 w-24 h-auto"/>
+          <Image src="/maskot1.png" alt="Maskot" width={125} height={125} className="hidden md:block absolute -bottom-145 right-225 w-24 h-auto"/>
 
            {/* Mobile */}
-          <Image src="/maskot1.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute bottom-155 right-2 w-14 h-auto"/>
+          <Image src="/maskot1.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute top-450 right-2 w-14 h-auto"/>
             </div>
           </div>
         </div>
