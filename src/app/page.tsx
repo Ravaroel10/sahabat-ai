@@ -134,23 +134,29 @@ export default function HomePage() {
 
         {/* Stats Grid — Real counts, not fabricated metrics */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left" id="arsitektur">
-          <div className="bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10">
-            <span className="font-black text-3xl block">Lintas Kementerian</span>
-            <span className="text-xs font-semibold text-white/90 mt-1 block">Cakupan Multi-Lembaga Negara</span>
-            <p className="text-[11px] text-white/70 mt-2 leading-relaxed">Program bantuan dari Kemensos, Kemenkes, Kemendikbudristek, Kemenkop UKM, BPJS Ketenagakerjaan, BNPB, hingga pemerintah daerah — merangkum kategori tunai, pangan, pendidikan, kesehatan, lansia, disabilitas, dan perumahan. Filter kelayakan otomatis menyesuaikan profil Anda.</p>
-            <Image src="/maskot3.png" alt="Maskot" width={120} height={120} className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"/>
+          <div className="relative bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10 overflow-hidden">
+            <div className="relative z-10">
+              <span className="font-black text-3xl block">Lintas Kementerian</span>
+              <span className="text-xs font-semibold text-white/90 mt-1 block">Cakupan Multi-Lembaga Negara</span>
+              <p className="text-[11px] text-white/70 mt-2 leading-relaxed pr-16">Program bantuan dari Kemensos, Kemenkes, Kemendikbudristek, Kemenkop UKM, BPJS Ketenagakerjaan, BNPB, hingga pemerintah daerah — merangkum kategori tunai, pangan, pendidikan, kesehatan, lansia, disabilitas, dan perumahan. Filter kelayakan otomatis menyesuaikan profil Anda.</p>
+            </div>
+            <Image src="/maskot3.png" alt="Maskot" width={120} height={120} className="absolute bottom-2 right-2 w-20 h-20 sm:w-28 sm:h-28 object-contain z-0"/>
           </div>
-          <div className="bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15">
-            <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
-            <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
-            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peraturan menyertakan rujukan pasal.</p>
-            <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="absolute bottom-0 -right-5 w-20 h-20 sm:w-28 sm:h-28 object-contain"/>
+          <div className="relative bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15 overflow-hidden">
+            <div className="relative z-10">
+              <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
+              <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
+              <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed pr-16">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peraturan menyertakan rujukan pasal.</p>
+            </div>
+            <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="absolute bottom-0 -right-5 w-20 h-20 sm:w-28 sm:h-28 object-contain z-0"/>
           </div>
-          <div className="bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc]">
-            <span className="font-black text-3xl block text-[#191816]">Auto-Birokrasi</span>
-            <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Template Lengkap + Custom PDF</span>
-            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template surat administrasi sipil Indonesia (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom dengan auto-fill kolom isian. Output format surat resmi kelurahan, siap cetak.</p>
-            <Image src="/maskot1.png" alt="Maskot" width={125} height={125} className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"/>
+          <div className="relative bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc] overflow-hidden">
+            <div className="relative z-10">
+              <span className="font-black text-3xl block text-[#191816]">Auto-Birokrasi</span>
+              <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Template Lengkap + Custom PDF</span>
+              <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed pr-16">Template surat administrasi sipil Indonesia (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom dengan auto-fill kolom isian. Output format surat resmi kelurahan, siap cetak.</p>
+            </div>
+            <Image src="/maskot1.png" alt="Maskot" width={125} height={125} className="absolute bottom-2 right-2 w-20 h-20 sm:w-28 sm:h-28 object-contain z-0"/>
           </div>
         </div>
       </section>
