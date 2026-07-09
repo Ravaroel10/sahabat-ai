@@ -20,6 +20,8 @@ import {
   type UIMessage,
 } from 'ai';
 
+import { buildErrorStream } from './error-stream';
+
 // Allow streaming responses up to 50 seconds (covers Python orchestration +
 // streamed completion). The hard Vercel limit is 60s on Pro.
 export const maxDuration = 50;
@@ -35,19 +37,15 @@ const AI_SERVICE_URL = process.env.AI_SERVICE_URL;
 const PYTHON_FETCH_TIMEOUT_MS = 45_000;
 
 export async function POST(req: Request) {
+
   try {
     const { messages }: { messages: UIMessage[] } = await req.json();
 
     if (!AI_SERVICE_URL) {
-      return new Response(
-        JSON.stringify({
-          error:
-            'Layanan AI belum dikonfigurasi. Hubungi administrator.',
-        }),
-        {
-          status: 503,
-          headers: { 'Content-Type': 'application/json' },
-        },
+      // Config error: still stream back a friendly message so the user
+      // gets clean rendering and no raw JSON leaks into the chat.
+      return buildErrorStream(
+        'Layanan AI belum dikonfigurasi. Hubungi administrator.',
       );
     }
 
@@ -73,10 +71,10 @@ export async function POST(req: Request) {
       return '';
     }
 
-    const conversation = modelMessages.map((m, i) => ({
+    const conversation = modelMessages.map((m) => ({
       role: m.role,
       content: extractText(m.content),
-    })).filter((_, i) => i !== lastUserMessageIndex);
+    })).filter((_, idx) => idx !== lastUserMessageIndex);
 
     const messageText = lastUserMessage ? extractText(lastUserMessage.content) : '';
 
@@ -108,16 +106,12 @@ export async function POST(req: Request) {
           : 'Python AI service fetch failed:',
         fetchError,
       );
-      return new Response(
-        JSON.stringify({
-          error: isAbort
-            ? 'Layanan AI butuh waktu lebih lama dari biasanya. Silakan coba lagi.'
-            : 'Tidak dapat menghubungi layanan AI. Periksa koneksi Anda.',
-        }),
-        {
-          status: isAbort ? 504 : 503,
-          headers: { 'Content-Type': 'application/json' },
-        },
+      // Stream the failure as a friendly assistant message so the user
+      // sees clean text, not a raw JSON error response from upstream.
+      return buildErrorStream(
+        isAbort
+          ? 'Layanan AI butuh waktu lebih lama dari biasanya. Silakan coba lagi.'
+          : 'Tidak dapat menghubungi layanan AI. Periksa koneksi Anda.',
       );
     }
     clearTimeout(timeout);
@@ -125,29 +119,16 @@ export async function POST(req: Request) {
     if (!pythonResponse.ok) {
       console.error('Python AI service error:', pythonResponse.status);
       // 14.2 — log + return a friendly fallback. We deliberately don't echo
-      // the upstream status to the user.
-      return new Response(
-        JSON.stringify({
-          error:
-            'Layanan AI sedang sibuk. Silakan coba lagi dalam beberapa saat.',
-        }),
-        {
-          status: 502,
-          headers: { 'Content-Type': 'application/json' },
-        },
+      // the upstream status to the user. Same graceful-stream treatment as
+      // the other failure paths so a transient Python 5xx doesn't paint
+      // the user-facing chat with raw JSON.
+      return buildErrorStream(
+        'Layanan AI sedang sibuk. Silakan coba lagi dalam beberapa saat.',
       );
     }
 
     if (!pythonResponse.body) {
-      return new Response(
-        JSON.stringify({
-          error: 'Tidak ada respons dari layanan AI.',
-        }),
-        {
-          status: 502,
-          headers: { 'Content-Type': 'application/json' },
-        },
-      );
+      return buildErrorStream('Tidak ada respons dari layanan AI.');
     }
 
     // Consume the Python SSE stream and re-emit as Vercel AI SDK UI message stream
@@ -416,15 +397,9 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Chat API proxy error:', error);
 
-    return new Response(
-      JSON.stringify({
-        error:
-          'Terjadi kesalahan saat memproses permintaan Anda. Silakan coba lagi.',
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      },
+    // Same graceful-stream treatment as the inner failure paths.
+    return buildErrorStream(
+      'Terjadi kesalahan saat memproses permintaan Anda. Silakan coba lagi.',
     );
   }
 }

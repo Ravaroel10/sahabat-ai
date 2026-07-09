@@ -22,9 +22,13 @@ class Settings:
     """Application settings loaded from environment variables."""
 
     # LLM provider configuration (LiteLLM format)
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini/gemini-1.5-flash")
+    LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini/gemini-2.0-flash")
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "")
+    
+    # Provider-specific API keys (for fallback support)
     OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    
     LLM_FALLBACK_MODELS: list = []  # Will be populated from env var
     
     def __init__(self):
@@ -34,9 +38,11 @@ class Settings:
         if fallback_str:
             self.LLM_FALLBACK_MODELS = [m.strip() for m in fallback_str.split(",") if m.strip()]
         
-        # For OpenRouter models, use OPENROUTER_API_KEY if LLM_API_KEY is not set
+        # Set primary API key based on model provider
         if self.LLM_MODEL.startswith("openrouter/") and not self.LLM_API_KEY:
             self.LLM_API_KEY = self.OPENROUTER_API_KEY
+        elif self.LLM_MODEL.startswith("gemini/") and not self.LLM_API_KEY:
+            self.LLM_API_KEY = self.GEMINI_API_KEY
 
     # Embedding configuration
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "huggingface")
