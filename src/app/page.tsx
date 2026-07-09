@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sparkles, MessageCircle, Store, FileText, ShieldAlert, Scale, Layers, Search, Brain, BookOpen, Users, HeartHandshake, Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -137,16 +138,32 @@ export default function HomePage() {
             <span className="font-black text-3xl block">14+ Program</span>
             <span className="text-xs font-semibold text-white/90 mt-1 block">Bantuan Sosial Terdaftar</span>
             <p className="text-[11px] text-white/70 mt-2 leading-relaxed">PKH, BPNT, KIP, BPJS PBI, ASLUT, ASOD, Rutilahu, BPUM, BLP, JKN, Jamkesda, PIS, Bansos Darurat, BKK — filter kelayakan otomatis berdasarkan kondisi Anda.</p>
+              {/* Desktop */}
+            <Image src="/maskot3.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -absolute bottom-55 right-2 w-24 h-auto"/>
+
+              {/* Mobile */}
+            <Image src="/maskot3.png" alt="Maskot" width={70} height={70}className="block md:hidden absolute bottom-58 right-2 w-14 h-auto"/>
           </div>
           <div className="bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15">
             <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
             <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
             <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peraturan menyertakan rujukan pasal.</p>
+            {/* Desktop */}
+          <Image src="/maskot2.png" alt="Maskot" width={120} height={120} className="hidden md:block absolute -absolute bottom-55 right-83 w-24 h-auto"/>
+
+            {/* Mobile */}
+          <Image src="/maskot2.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute bottom-108 right-2 w-14 h-auto"/>
           </div>
           <div className="bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc]">
             <span className="font-black text-3xl block text-[#191816]">4 Template + Custom</span>
             <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Generator Dokumen PDF</span>
-            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template bawaan (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom dengan ekstraksi kolom isian otomatis. Output siap cetak.</p>
+           {/* Desktop */}
+          <Image src="/maskot1.png" alt="Maskot" width={125} height={125} className="hidden md:block absolute -absolute bottom-55 right-165 w-24 h-auto"/>
+
+           {/* Mobile */}
+          <Image src="/maskot1.png" alt="Maskot" width={70} height={70} className="block md:hidden absolute bottom-155 right-2 w-14 h-auto"/>
+          <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template bawaan (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom dengan ekstraksi kolom isian otomatis. Output siap cetak.</p>
+          
           </div>
         </div>
       </section>
