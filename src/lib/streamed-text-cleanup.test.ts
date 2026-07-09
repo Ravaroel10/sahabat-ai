@@ -103,6 +103,75 @@ describe('stripIntentJson', () => {
     // doesn't accidentally fire when only phase 1 reduced length.
     expect(stripIntentJson('```json\n{}\n```')).toBe('')
   })
+
+  // ---- Schema-drift fallback (Passes D/E/F in `stripBraceBalancedNakedJson`) ----
+  // The LLM occasionally drops the `intent_classification` wrapper and
+  // emits the schema fields directly keyed off the root object:
+  //   { "primary_intent": "...", "confidence": 0.9, ... }
+  // The stripper should still catch and remove such blocks.
+
+  it('removes naked multi-line JSON when "intent_classification" wrapper is missing — schema drift', () => {
+    const input =
+      '{\n  "primary_intent": "application",\n  "confidence": 0.9,\n  "show_program_cards": true\n}\n\nBerikut ringkasan program PKH untuk Anda.'
+    expect(stripIntentJson(input)).toBe('Berikut ringkasan program PKH untuk Anda.')
+  })
+
+  it('removes naked single-line JSON when wrapper is missing', () => {
+    const input =
+      '{"primary_intent":"document_request","confidence":0.95}\nBuatkan saya SKTM'
+    expect(stripIntentJson(input)).toBe('Buatkan saya SKTM')
+  })
+
+  // ---- Streaming-flash suppression (Phase 4 partial-block anchor) ----
+  // While the LLM is still streaming the JSON preamble, Phase 1/2 need a
+  // complete fence/brace structure to strip it. Until that arrives,
+  // partial fragments must not flash in the rendered output.
+
+  it('suppresses a partial ```json preamble during streaming (returns empty)', () => {
+    // Simulates the first few tokens arriving: opening fence only, no
+    // closing fence yet, no complete JSON object. The user must see no
+    // preview text until the block closes.
+    const partial1 = '```json\n'
+    const partial2 = '```json\n{\n  "intent_clas'
+    expect(stripIntentJson(partial1)).toBe('')
+    expect(stripIntentJson(partial2)).toBe('')
+  })
+
+  it('suppresses a partial ``` preamble without language tag', () => {
+    const partial = '```\n{\n  "intent_classification":'
+    expect(stripIntentJson(partial)).toBe('')
+  })
+
+  it('suppresses a partial naked JSON preamble that starts with primary_intent', () => {
+    const partial = '{\n  "primary_intent": "appl'
+    expect(stripIntentJson(partial)).toBe('')
+  })
+
+  it('does NOT suppress legitimate prose that happens to lead with "json"', () => {
+    // The Phase 4 anchor deliberately excludes the bare `json` keyword so
+    // that an explanatory paragraph like this survives cleanup.
+    expect(
+      stripIntentJson('json adalah format pertukaran data yang umum dipakai'),
+    ).toBe('json adalah format pertukaran data yang umum dipakai')
+  })
+
+  it('does NOT suppress legitimate prose that opens with a quoted example in `{ ... }`', () => {
+    // A conversational opener like "{Nama program} adalah PKH" must NOT
+    // trigger the partial-block suppressor. The anchor requires a JSON
+    // intent key (intent_classification / primary_intent) to be present
+    // inside the braces, so generic quoted examples are safe.
+    expect(stripIntentJson('{Nama program} adalah PKH')).toBe(
+      '{Nama program} adalah PKH',
+    )
+  })
+
+  it('does NOT suppress prose that comes AFTER the JSON was already stripped', () => {
+    // Once Phase 1/2 fully removed the JSON, the result no longer starts
+    // with a preamble signature and Phase 4 is a no-op.
+    const input =
+      '```json\n{"intent_classification":{"primary_intent":"question"}}\n```\nHalo, apa itu PKH?'
+    expect(stripIntentJson(input)).toBe('Halo, apa itu PKH?')
+  })
 })
 
 describe('stripInlineMarkers', () => {
