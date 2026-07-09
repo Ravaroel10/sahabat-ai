@@ -105,7 +105,7 @@ export default function HomePage() {
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
                     <MessageCircle size={22} className="text-[#e05e3f] mb-3" />
                     <h5 className="font-bold text-xs text-[#191816] mb-1">1. Chat AI + RAG</h5>
-                    <p className="text-[11px] text-[#191816]/60 leading-normal">Chat streaming dengan sitasi otomatis dari Permensos, Perpres, dan UU. Respons dalam bahasa percakapan, darurat terdeteksi otomatis.</p>
+                    <p className="text-[11px] text-[#191816]/60 leading-normal">Chat streaming dengan sitasi otomatis dari Permensos, Perpres, dan UU. Respons dalam bahasa percakapan, darurat terdetek[...]
                   </div>
 
                   <div className="bg-[#faf6f2] p-4 rounded-2xl border border-[#e05e3f]/10 hover:border-[#e05e3f]/30 transition-all">
@@ -135,47 +135,53 @@ export default function HomePage() {
         {/* Stats Grid — Real counts, not fabricated metrics */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-left" id="arsitektur">
           {/* Card 1: 14+ Program */}
-          <div className="relative bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10 overflow-hidden">
-            <span className="font-black text-3xl block">14+ Program</span>
-            <span className="text-xs font-semibold text-white/90 mt-1 block">Bantuan Sosial Terdaftar</span>
-            <p className="text-[11px] text-white/70 mt-2 leading-relaxed">PKH, BPNT, KIP, BPJS PBI, ASLUT, ASOD, Rutilahu, BPUM, BLP, JKN, Jamkesda, PIS, Bansos Darurat, BKK — filter kelayakan otoma[...]
+          <div className="relative bg-[#e05e3f] text-white p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/10 overflow-hidden pr-24 sm:pr-32">
+            <div className="relative z-10">
+              <span className="font-black text-3xl block">14+ Program</span>
+              <span className="text-xs font-semibold text-white/90 mt-1 block">Bantuan Sosial Terdaftar</span>
+              <p className="text-[11px] text-white/70 mt-2 leading-relaxed">PKH, BPNT, KIP, BPJS PBI, ASLUT, ASOD, Rutilahu, BPUM, BLP, JKN, Jamkesda, PIS, Bansos Darurat, BKK — filter kelayakan otoma[...]
             </p>
+            </div>
             <Image 
               src="/maskot3.png" 
               alt="Maskot" 
               width={120} 
               height={120} 
-              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"
+              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain pointer-events-none z-0 opacity-90"
             />
           </div>
 
           {/* Card 2: RAG + Sitasi */}
-          <div className="relative bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15 overflow-hidden">
-            <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
-            <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
-            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peratura[...]
+          <div className="relative bg-white text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#e05e3f]/15 overflow-hidden pr-24 sm:pr-32">
+            <div className="relative z-10">
+              <span className="font-black text-3xl block text-[#e05e3f]">RAG + Sitasi</span>
+              <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Respons Berbasis Regulasi</span>
+              <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Chat streaming dengan retrieval-augmented generation dari knowledge base Permensos, Perpres, dan UU. Setiap klaim peratura[...]
             </p>
+            </div>
             <Image 
               src="/maskot2.png" 
               alt="Maskot" 
               width={120} 
               height={120} 
-              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"
+              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain pointer-events-none z-0 opacity-90"
             />
           </div>
 
           {/* Card 3: 4 Template + Custom */}
-          <div className="relative bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc] overflow-hidden">
-            <span className="font-black text-3xl block text-[#191816]">4 Template + Custom</span>
-            <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Generator Dokumen PDF</span>
-            <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template bawaan (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom — kolom isian diekstrak otomatis. Output si[...]
+          <div className="relative bg-[#faf6f2] text-[#191816] p-6 sm:p-8 rounded-3xl border border-[#eae4dc] overflow-hidden pr-24 sm:pr-32">
+            <div className="relative z-10">
+              <span className="font-black text-3xl block text-[#191816]">4 Template + Custom</span>
+              <span className="text-xs font-semibold text-[#191816]/80 mt-1 block">Generator Dokumen PDF</span>
+              <p className="text-[11px] text-[#191816]/60 mt-2 leading-relaxed">Template bawaan (SKTM, Permohonan, Aduan, Pengantar) plus upload PDF custom — kolom isian diekstrak otomatis. Output si[[...]
             </p>
+            </div>
             <Image 
               src="/maskot1.png" 
               alt="Maskot" 
               width={125} 
               height={125} 
-              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain"
+              className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 object-contain pointer-events-none z-0 opacity-90"
             />
           </div>
         </div>
@@ -267,22 +273,22 @@ export default function HomePage() {
             {
               icon: Brain,
               title: "Chat AI Multi-Kemampuan",
-              description: "Empat kapabilitas dalam satu antarmuka: navigasi hak, sitasi bukti (Permensos/Perpres/UU), fact-check klaim, dan eskalasi darurat. Chat history otomatis tersimpan untuk pengguna login."
+              description: "Empat kapabilitas dalam satu antarmuka: navigasi hak, sitasi bukti (Permensos/Perpres/UU), fact-check klaim, dan eskalasi darurat. Chat history otomatis tersimpan untuk pen[...]
             },
             {
               icon: ShieldAlert,
               title: "Deteksi Darurat Otomatis",
-              description: "Pesan dengan kata kunci darurat (kecelakaan, kekerasan, bencana) ditandai otomatis. UI menampilkan hotline 119/110/113 dan program prioritas. Berlaku bahkan saat LLM gagal."
+              description: "Pesan dengan kata kunci darurat (kecelakaan, kekerasan, bencana) ditandai otomatis. UI menampilkan hotline 119/110/113 dan program prioritas. Berlaku bahkan saat LLM gagal.[...]
             },
             {
               icon: Search,
               title: "Smart Eligibility Search",
-              description: "Modal dua-langkah: input kriteria terstruktur, lalu konteks bebas. Backend menghitung skor kelayakan dengan LLM untuk rekomendasi yang kontekstual, bukan hanya berbasis field matching."
+              description: "Modal dua-langkah: input kriteria terstruktur, lalu konteks bebas. Backend menghitung skor kelayakan dengan LLM untuk rekomendasi yang kontekstual, bukan hanya berbasis fie[...]
             },
             {
               icon: Layers,
               title: "Konteks Lintas-Fitur",
-              description: "Program hasil rekomendasi chat otomatis mengisi filter marketplace. Program yang dipilih membawa konteksnya (kriteria user) ke Auto-Birokrasi. Riwayat draf tersimpan per template."
+              description: "Program hasil rekomendasi chat otomatis mengisi filter marketplace. Program yang dipilih membawa konteksnya (kriteria user) ke Auto-Birokrasi. Riwayat draf tersimpan per te[...]
             }
           ].map((item, idx) => {
             const Icon = item.icon;
